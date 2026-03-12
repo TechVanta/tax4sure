@@ -107,11 +107,59 @@ const pillars = [
   },
 ];
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tax4Sure | Canadian Tax Filing, CPA & Accounting Services",
+  description:
+    "Tax4Sure offers professional Canadian tax services — T1 personal returns, T2 corporate tax, GST/HST filing, bookkeeping and year-round advisory. Secure online client portal.",
+  alternates: {
+    canonical: "https://d8nnmu6vr11v0.cloudfront.net/",
+  },
+  openGraph: {
+    title: "Tax4Sure | Canadian Tax Filing, CPA & Accounting Services",
+    description:
+      "Professional Canadian tax services — T1, T2, GST/HST, bookkeeping & advisory. Secure online client portal.",
+    url: "https://d8nnmu6vr11v0.cloudfront.net/",
+  },
+};
+
 /* ── Page ───────────────────────────────────────────────────────────────────── */
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white font-sans">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AccountingService",
+            name: "Tax4Sure",
+            description:
+              "Professional Canadian tax filing and accounting services including T1 personal tax, T2 corporate tax, GST/HST filing, bookkeeping, and tax advisory.",
+            url: "https://d8nnmu6vr11v0.cloudfront.net",
+            email: "tax4sure@gmail.com",
+            areaServed: {
+              "@type": "Country",
+              name: "Canada",
+            },
+            serviceType: [
+              "Personal Tax Return (T1)",
+              "Corporate Tax Return (T2)",
+              "GST/HST Filing",
+              "Bookkeeping",
+              "Tax Advisory",
+              "Self-Employed Tax Filing",
+            ],
+            offers: {
+              "@type": "Offer",
+              description: "Professional tax filing and accounting services for individuals and businesses in Canada.",
+            },
+          }),
+        }}
+      />
       <HomeNav />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -159,6 +207,26 @@ export default function HomePage() {
         </div>
 
       </section>
+
+      {/* ── TRUST STRIP ──────────────────────────────────────────────────── */}
+      <div className="border-y border-gray-100 bg-white py-6">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {[
+              { icon: "🇨🇦", text: "Canadian Tax Experts" },
+              { icon: "🔒", text: "Secure Encrypted Portal" },
+              { icon: "📋", text: "T1 · T2 · GST/HST · Bookkeeping" },
+              { icon: "📅", text: "Year-Round Support" },
+              { icon: "✅", text: "CRA-Compliant E-Filing" },
+            ].map((item) => (
+              <div key={item.text} className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                <span className="text-base">{item.icon}</span>
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
       <section id="services" className="bg-gray-50 py-24">
@@ -272,6 +340,51 @@ export default function HomePage() {
                 );
               })}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-[#C9A84C]">Common Questions</p>
+            <h2 className="text-4xl font-black text-[#0D1F4E]">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              {
+                q: "What is the deadline for filing taxes in Canada?",
+                a: "For most individuals, the Canadian personal tax (T1) filing deadline is April 30. Self-employed individuals and their spouses have until June 15 to file, though any taxes owed are still due April 30. Corporate tax (T2) returns are due 6 months after the end of the corporation's fiscal year.",
+              },
+              {
+                q: "What is the difference between a T1 and T2 tax return?",
+                a: "A T1 is the personal income tax return filed by individuals, including employees, retirees, and self-employed people. A T2 is the corporate income tax return filed annually by all resident corporations in Canada, regardless of whether they earned income.",
+              },
+              {
+                q: "Do I need to register for GST/HST?",
+                a: "You must register for GST/HST if your business revenues exceed $30,000 in a single calendar quarter or over four consecutive quarters. Voluntary registration is also available. Once registered, you collect GST/HST from clients and remit it to the CRA on a monthly, quarterly, or annual basis.",
+              },
+              {
+                q: "What documents do I need to file my personal tax return?",
+                a: "Commonly required documents include: T4 slips (employment income), T3/T5 slips (investment income), RRSP contribution receipts, medical expense receipts, charitable donation receipts, tuition slips (T2202), and any business income/expense records if self-employed.",
+              },
+              {
+                q: "How do I upload my documents to Tax4Sure?",
+                a: "Simply create a free account on our secure client portal, log in, and upload your documents directly. Documents are organized by tax year and kept in an encrypted, private vault that only you and your tax professional can access.",
+              },
+            ].map((item, i) => (
+              <details
+                key={i}
+                className="group rounded-xl border border-gray-100 bg-gray-50 open:bg-white open:shadow-sm transition-all"
+              >
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-base font-semibold text-[#0D1F4E] list-none">
+                  {item.q}
+                  <span className="ml-4 shrink-0 text-[#C9A84C] group-open:rotate-45 transition-transform text-xl leading-none">+</span>
+                </summary>
+                <p className="px-6 pb-5 pt-1 text-sm leading-relaxed text-gray-500">{item.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

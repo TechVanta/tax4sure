@@ -2,15 +2,69 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
+const SITE_URL = "https://d8nnmu6vr11v0.cloudfront.net";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Tax4Sure – Secure Client Portal",
+    default: "Tax4Sure | Canadian Tax Filing, CPA & Accounting Services",
     template: "%s | Tax4Sure",
   },
   description:
-    "Professional CPA firm client portal for secure document management and tax year organization.",
-  keywords: ["CPA", "tax documents", "accounting", "client portal", "document management"],
-  authors: [{ name: "Tax4Sure" }],
+    "Tax4Sure offers professional Canadian tax filing services — T1 personal returns, T2 corporate tax, GST/HST filing, bookkeeping, and year-round tax advisory. Fast, accurate, and secure.",
+  keywords: [
+    "Canadian tax filing",
+    "tax return Canada",
+    "T1 tax return",
+    "T2 corporate tax",
+    "GST HST filing",
+    "bookkeeping Canada",
+    "CPA tax services",
+    "personal tax return Canada",
+    "corporate tax filing Canada",
+    "tax accountant Canada",
+    "small business tax Canada",
+    "self employed tax Canada",
+    "tax preparation Canada",
+    "income tax filing Canada",
+    "online tax filing Canada",
+    "Tax4Sure",
+  ],
+  authors: [{ name: "Tax4Sure", url: SITE_URL }],
+  creator: "Tax4Sure",
+  publisher: "Tax4Sure",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_CA",
+    url: SITE_URL,
+    siteName: "Tax4Sure",
+    title: "Tax4Sure | Canadian Tax Filing, CPA & Accounting Services",
+    description:
+      "Professional Canadian tax services — T1, T2, GST/HST, bookkeeping & advisory. Secure online client portal. Fast, accurate, year-round support.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tax4Sure – Canadian Tax Filing & Accounting Services",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tax4Sure | Canadian Tax Filing, CPA & Accounting Services",
+    description:
+      "Professional Canadian tax services — T1, T2, GST/HST, bookkeeping & advisory. Secure online client portal.",
+    images: ["/og-image.png"],
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
   icons: {
     icon: "/favicon.svg",
   },
@@ -22,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-CA" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
