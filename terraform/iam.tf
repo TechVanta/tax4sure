@@ -38,6 +38,7 @@ resource "aws_iam_role_policy" "lambda_app" {
           "dynamodb:PutItem",
           "dynamodb:Query",
           "dynamodb:UpdateItem",
+          "dynamodb:Scan",
         ]
         Resource = [
           aws_dynamodb_table.users.arn,
