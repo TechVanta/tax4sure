@@ -15,6 +15,7 @@ import {
   Star,
   FileCheck,
   ChevronRight,
+  Mail,
 } from "lucide-react";
 import { HomeNav } from "@/components/marketing/HomeNav";
 
@@ -330,6 +331,16 @@ export default function HomePage() {
               Client Login
             </Link>
           </div>
+          <p className="mt-8 text-white/50 text-sm">
+            Have a question?{" "}
+            <a
+              href="mailto:tax4sure@gmail.com"
+              className="inline-flex items-center gap-1.5 text-[#C9A84C] font-semibold hover:text-[#E8C060] transition-colors"
+            >
+              <Mail className="h-4 w-4" />
+              tax4sure@gmail.com
+            </a>
+          </p>
         </div>
       </section>
 
@@ -358,9 +369,18 @@ export default function HomePage() {
               <span>Bookkeeping</span>
             </div>
 
-            <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Tax4Sure. All rights reserved.
-            </p>
+            <div className="flex flex-col items-center gap-1 md:items-end">
+              <a
+                href="mailto:tax4sure@gmail.com"
+                className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#C9A84C] transition-colors"
+              >
+                <Mail className="h-3.5 w-3.5" />
+                tax4sure@gmail.com
+              </a>
+              <p className="text-sm text-gray-400">
+                © {new Date().getFullYear()} Tax4Sure. All rights reserved.
+              </p>
+            </div>
           </div>
         </div>
       </footer>
