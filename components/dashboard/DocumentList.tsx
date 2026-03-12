@@ -25,7 +25,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatBytes, formatDate, getFileTypeLabel } from "@/lib/utils";
-import type { DriveFile } from "@/lib/s3-storage";
+import type { DriveFile } from "@/lib/types";
 import { apiCall } from "@/lib/api-client";
 
 interface DocumentListProps {

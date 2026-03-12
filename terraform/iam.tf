@@ -62,10 +62,34 @@ resource "aws_iam_role_policy" "lambda_app" {
   })
 }
 
-# ─── GitHub Actions Deploy User ───────────────────────────────────────────────
+# ─── GitHub Actions OIDC Role ─────────────────────────────────────────────────
 
-resource "aws_iam_user" "github_actions" {
+# Reference the existing OIDC provider (already created in the account)
+data "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+}
+
+resource "aws_iam_role" "github_actions" {
   name = "tax4sure-github-actions"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Federated = data.aws_iam_openid_connect_provider.github.arn
+      }
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+        }
+        StringLike = {
+          "token.actions.githubusercontent.com:sub" = "repo:${var.github_repo}:*"
+        }
+      }
+    }]
+  })
 
   tags = {
     Name        = "Tax4Sure GitHub Actions"
@@ -73,9 +97,9 @@ resource "aws_iam_user" "github_actions" {
   }
 }
 
-resource "aws_iam_user_policy" "github_actions" {
+resource "aws_iam_role_policy" "github_actions" {
   name = "tax4sure-github-actions-policy"
-  user = aws_iam_user.github_actions.name
+  role = aws_iam_role.github_actions.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -107,8 +131,4 @@ resource "aws_iam_user_policy" "github_actions" {
       },
     ]
   })
-}
-
-resource "aws_iam_access_key" "github_actions" {
-  user = aws_iam_user.github_actions.name
 }

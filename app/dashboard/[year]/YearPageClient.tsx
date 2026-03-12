@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { TAX_YEARS } from "@/lib/utils";
 import { apiCall } from "@/lib/api-client";
-import type { DriveFile } from "@/lib/s3-storage";
+import type { DriveFile } from "@/lib/types";
 
 interface PageProps {
   params: { year: string };
