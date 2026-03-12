@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "website" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  comment             = "Tax4Sure – Professional CPA Portal"
+  comment             = "Tax4Sure – Tax & Accounting Portal"
 
   # PriceClass_100 = US, Canada, Europe only (lowest cost)
   price_class = "PriceClass_100"

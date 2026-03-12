@@ -31,3 +31,4 @@ export const handler = async (
     body: JSON.stringify({ error: "Not found" }),
   };
 };
+
