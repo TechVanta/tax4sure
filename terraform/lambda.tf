@@ -1,3 +1,15 @@
+# ─── JWT Secret ──────────────────────────────────────────────────────────────
+
+resource "random_password" "jwt_secret" {
+  length  = 48
+  special = false
+
+  lifecycle {
+    # Never regenerate after first creation — existing tokens would break
+    ignore_changes = [length, special]
+  }
+}
+
 # Upload a placeholder ZIP so Terraform can create the function on first apply.
 # GitHub Actions will update the code on every push to main.
 resource "aws_s3_object" "lambda_placeholder" {
@@ -27,7 +39,7 @@ resource "aws_lambda_function" "api" {
       AWS_REGION_ENV        = var.aws_region
       DYNAMODB_TABLE_NAME   = aws_dynamodb_table.users.name
       S3_BUCKET_NAME        = aws_s3_bucket.documents.id
-      JWT_SECRET            = var.jwt_secret
+      JWT_SECRET            = random_password.jwt_secret.result
       FRONTEND_URL          = "http://${aws_s3_bucket_website_configuration.website.website_endpoint}"
     }
   }

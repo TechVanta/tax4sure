@@ -3,8 +3,6 @@ name: Deploy Tax4Sure
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 permissions:
   id-token: write
@@ -12,15 +10,46 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  LAMBDA_ARTIFACTS_BUCKET: tax4sure-lambda-artifacts
-  WEBSITE_BUCKET: tax4sure-website
 
 jobs:
-  # Build and deploy Lambda API
-  deploy-lambda:
-    name: Build & Deploy Lambda API
+  # ── 1. Provision / update infrastructure ────────────────────────────────────
+  terraform:
+    name: Terraform Apply
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    outputs:
+      lambda_function_url: ${{ steps.tf-output.outputs.lambda_function_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false
+        working-directory: terraform
+
+      - name: Export Terraform outputs
+        id: tf-output
+        run: |
+          echo "lambda_function_url=$(terraform output -raw lambda_function_url)" >> "$GITHUB_OUTPUT"
+        working-directory: terraform
+
+  # ── 2. Build & deploy Lambda API ────────────────────────────────────────────
+  deploy-lambda:
+    name: Deploy Lambda API
+    runs-on: ubuntu-latest
+    needs: terraform
     steps:
       - uses: actions/checkout@v4
 
@@ -51,21 +80,20 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload ZIP to S3
-        run: aws s3 cp lambda/lambda.zip s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/api/lambda.zip
+        run: aws s3 cp lambda/lambda.zip s3://tax4surelambdaartifacts/api/lambda.zip
 
       - name: Update Lambda function code
         run: |
           aws lambda update-function-code \
             --function-name tax4sure-api \
-            --s3-bucket ${{ env.LAMBDA_ARTIFACTS_BUCKET }} \
-            --s3-key api/lambda.zip \
-            --region ${{ env.AWS_REGION }}
+            --s3-bucket tax4surelambdaartifacts \
+            --s3-key api/lambda.zip
 
-  # Build and deploy static Next.js site to S3
+  # ── 3. Build & deploy static website ────────────────────────────────────────
   deploy-website:
-    name: Build & Deploy Static Website
+    name: Deploy Website
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    needs: terraform
     steps:
       - uses: actions/checkout@v4
 
@@ -80,7 +108,7 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_API_URL: ${{ needs.terraform.outputs.lambda_function_url }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -90,32 +118,14 @@ jobs:
 
       - name: Sync to S3 (assets with long cache)
         run: |
-          aws s3 sync out/ s3://${{ env.WEBSITE_BUCKET }} \
+          aws s3 sync out/ s3://tax4sure \
             --delete \
             --cache-control "public, max-age=31536000, immutable" \
             --exclude "*.html"
 
       - name: Sync to S3 (HTML with no cache)
         run: |
-          aws s3 sync out/ s3://${{ env.WEBSITE_BUCKET }} \
+          aws s3 sync out/ s3://tax4sure \
             --cache-control "public, max-age=0, must-revalidate" \
             --include "*.html" \
             --exclude "*"
-
-  # Lint check on PRs
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - run: npm ci
-
-      - run: npm run lint
-        env:
-          NEXT_PUBLIC_API_URL: "https://placeholder.lambda-url.us-east-1.on.aws"

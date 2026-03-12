@@ -28,18 +28,6 @@ variable "dynamodb_table_name" {
   default     = "tax4sure-users"
 }
 
-variable "jwt_secret" {
-  description = "Secret key for signing JWT tokens (min 32 chars)"
-  type        = string
-  sensitive   = true
-}
-
-variable "github_repo" {
-  description = "GitHub repository (owner/repo) allowed to assume the deploy role"
-  type        = string
-  default     = "geekyrbhalala/tax4sure"
-}
-
 variable "environment" {
   description = "Deployment environment"
   type        = string

@@ -55,20 +55,18 @@ A professional, secure document management portal for CPA firms and their client
 
 ## Prerequisites
 
-Before deploying, ensure you have the following:
-
 | Requirement | Details |
 |---|---|
-| **AWS Account** | With permissions for S3, DynamoDB, Lambda, IAM |
-| **AWS CLI** | Installed and configured (`aws configure`) |
-| **Terraform** | v1.5.0 or later installed |
-| **Node.js** | v20 or later |
-| **GitHub OIDC Provider** | Already set up in your AWS account (see below) |
-| **Terraform State Bucket** | An S3 bucket for remote state (see `terraform/providers.tf`) |
+| **AWS Account** | With an OIDC role for GitHub Actions (broad permissions — see below) |
+| **Terraform State Bucket** | `terraform-state-geekyrbhalala` must exist in `us-east-1` |
+| **Node.js** | v20+ (for local development only) |
 
-### GitHub OIDC Provider (one-time setup)
+### GitHub OIDC Provider & Role (one-time setup)
 
-If you haven't already created the GitHub OIDC identity provider in your AWS account:
+You need an IAM OIDC identity provider for GitHub and a role with permissions for:
+S3, DynamoDB, Lambda, IAM, CloudWatch Logs.
+
+If you haven't already created the OIDC provider:
 
 ```bash
 aws iam create-open-id-connect-provider \
@@ -77,89 +75,47 @@ aws iam create-open-id-connect-provider \
   --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
 ```
 
+The role's trust policy must allow your GitHub repo to assume it.
+
+### Terraform State Bucket (one-time setup)
+
+```bash
+aws s3api create-bucket --bucket terraform-state-geekyrbhalala --region us-east-1
+```
+
 ---
 
-## Deployment — Step by Step
+## Deployment — One Secret, Fully Automated
 
-### Step 1: Clone & Install
-
-```bash
-git clone https://github.com/geekyrbhalala/tax4sure.git
-cd tax4sure
-npm install
-cd lambda && npm install && cd ..
-```
-
-### Step 2: Create `terraform/terraform.tfvars`
-
-Create a file at `terraform/terraform.tfvars` (this file is gitignored):
-
-```hcl
-jwt_secret = "replace-with-a-random-string-at-least-32-characters"
-```
-
-Generate a strong secret:
-```bash
-openssl rand -base64 32
-```
-
-### Step 3: Run Terraform
-
-```bash
-cd terraform
-terraform init
-terraform plan       # Review what will be created
-terraform apply      # Type 'yes' to confirm
-```
-
-Terraform creates all of the following:
-- **S3 Buckets:** `tax4sure-website`, `tax4sure-documents`, `tax4sure-lambda-artifacts`
-- **DynamoDB Table:** `tax4sure-users` (with `EmailIndex` GSI)
-- **Lambda Function:** `tax4sure-api` (Node.js 20, 512MB, 30s timeout)
-- **Lambda Function URL:** Public HTTPS endpoint for the API
-- **IAM Roles:** Lambda execution role + GitHub Actions OIDC deploy role
-
-### Step 4: Note the Terraform Outputs
-
-After `terraform apply`, note these values:
-
-```bash
-terraform output github_actions_role_arn    # IAM Role ARN for GitHub Actions
-terraform output lambda_function_url        # Lambda API endpoint
-terraform output website_url                # S3 website URL
-terraform output documents_bucket_name      # Documents bucket name
-terraform output dynamodb_table_name        # DynamoDB table name
-```
-
-### Step 5: Add GitHub Repository Secrets
+### Step 1: Add the single GitHub Secret
 
 Go to **github.com/geekyrbhalala/tax4sure → Settings → Secrets and variables → Actions** and add:
 
-| Secret | Value | Source |
-|---|---|---|
-| `AWS_ROLE_ARN` | `arn:aws:iam::123456789012:role/tax4sure-github-actions` | `terraform output github_actions_role_arn` |
-| `AWS_REGION` | `us-east-1` | Static |
-| `NEXT_PUBLIC_API_URL` | `https://xxx.lambda-url.us-east-1.on.aws/` | `terraform output lambda_function_url` |
-| `WEBSITE_BUCKET` | `tax4sure-website` | Static (matches `terraform/variables.tf`) |
-| `LAMBDA_ARTIFACTS_BUCKET` | `tax4sure-lambda-artifacts` | Static (matches `terraform/variables.tf`) |
+| Secret | Value |
+|---|---|
+| `AWS_ROLE_ARN` | ARN of your GitHub Actions OIDC role |
 
-### Step 6: Push & Deploy
+That's the **only** secret. Everything else is hardcoded or auto-generated.
+
+### Step 2: Push & Deploy
 
 ```bash
-git add -A
-git commit -m "Ready for deployment"
 git push origin main
 ```
 
-GitHub Actions will automatically:
-1. **Build & deploy the Lambda API** — Compile TypeScript, zip, upload to S3, update Lambda function code
-2. **Build & deploy the static website** — Build Next.js, sync HTML/assets to S3 with proper cache headers
+GitHub Actions automatically runs three jobs in order:
 
-### Step 7: Verify
+1. **Terraform Apply** — Provisions all AWS resources (S3 buckets, DynamoDB, Lambda, IAM roles). JWT secret is auto-generated and stored in Terraform state.
+2. **Deploy Lambda** — Compiles TypeScript, packages a ZIP, uploads to S3, updates the Lambda function.
+3. **Deploy Website** — Builds Next.js (using the Lambda URL from Terraform output), syncs static files to S3.
 
-- **Website:** Open the `website_url` from Terraform output
-- **API:** `curl <lambda_function_url>/api/auth/login` should return a 400 (missing body)
-- **Sign up:** Create an account through the website, then log in
+### Step 3: Verify
+
+After the workflow completes:
+
+- **Website:** `http://tax4sure.s3-website-us-east-1.amazonaws.com`
+- **API:** `curl <lambda_function_url>/api/auth/login` → returns 400 (missing body)
+- **Sign up:** Create an account through the website
 
 ---
 
@@ -242,7 +198,7 @@ tax4sure/
 │   ├── dynamodb.tf                 # DynamoDB users table
 │   ├── s3.tf                       # S3 buckets (website, documents, artifacts)
 │   ├── lambda.tf                   # Lambda function + function URL
-│   ├── iam.tf                      # IAM roles (Lambda + GitHub OIDC)
+│   ├── iam.tf                      # IAM role (Lambda execution)
 │   └── outputs.tf                  # Terraform outputs
 │
 ├── .github/workflows/

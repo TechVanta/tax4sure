@@ -1,10 +1,10 @@
 output "website_url" {
-  description = "S3 static website URL (set as NEXT_PUBLIC_SITE_URL)"
+  description = "S3 static website URL"
   value       = "http://${aws_s3_bucket_website_configuration.website.website_endpoint}"
 }
 
 output "lambda_function_url" {
-  description = "Lambda Function URL — set this as NEXT_PUBLIC_API_URL in GitHub secrets"
+  description = "Lambda Function URL (API endpoint)"
   value       = aws_lambda_function_url.api.function_url
 }
 
@@ -16,9 +16,4 @@ output "documents_bucket_name" {
 output "dynamodb_table_name" {
   description = "DynamoDB users table name"
   value       = aws_dynamodb_table.users.name
-}
-
-output "github_actions_role_arn" {
-  description = "IAM Role ARN for GitHub Actions OIDC — add to repo secrets as AWS_ROLE_ARN"
-  value       = aws_iam_role.github_actions.arn
 }
