@@ -43,6 +43,7 @@ next-env.d.ts
 .terraform.lock.hcl
 *.tfvars
 *.tfvars.json
+terraform/placeholder.zip
 
 # lambda build artifacts
 lambda/dist/

@@ -10,16 +10,27 @@ resource "random_password" "jwt_secret" {
   }
 }
 
-# Upload a placeholder ZIP so Terraform can create the function on first apply.
-# GitHub Actions will update the code on every push to main.
+# Create a minimal valid ZIP so Terraform can create the Lambda on first apply.
+# GitHub Actions will overwrite this with the real code on every push.
+data "archive_file" "lambda_placeholder" {
+  type        = "zip"
+  output_path = "${path.module}/placeholder.zip"
+
+  source {
+    content  = "exports.handler = async () => ({ statusCode: 200, body: 'Placeholder — deploy via CI/CD' });"
+    filename = "index.js"
+  }
+}
+
 resource "aws_s3_object" "lambda_placeholder" {
-  bucket  = aws_s3_bucket.lambda_artifacts.id
-  key     = "api/lambda.zip"
-  content = "placeholder"
+  bucket = aws_s3_bucket.lambda_artifacts.id
+  key    = "api/lambda.zip"
+  source = data.archive_file.lambda_placeholder.output_path
+  etag   = data.archive_file.lambda_placeholder.output_md5
 
   lifecycle {
     # Never overwrite after first creation — CI/CD owns this
-    ignore_changes = [content, etag]
+    ignore_changes = [source, etag]
   }
 }
 
