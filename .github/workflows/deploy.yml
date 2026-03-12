@@ -18,7 +18,7 @@ jobs:
     name: Terraform Apply
     runs-on: ubuntu-latest
     outputs:
-      lambda_function_url: ${{ steps.tf-output.outputs.lambda_function_url }}
+      api_gateway_url: ${{ steps.tf-output.outputs.api_gateway_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -43,7 +43,7 @@ jobs:
       - name: Export Terraform outputs
         id: tf-output
         run: |
-          echo "lambda_function_url=$(terraform output -raw lambda_function_url)" >> "$GITHUB_OUTPUT"
+          echo "api_gateway_url=$(terraform output -raw api_gateway_url)" >> "$GITHUB_OUTPUT"
         working-directory: terraform
 
   # ── 2. Build & deploy Lambda API ────────────────────────────────────────────
@@ -109,7 +109,7 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ needs.terraform.outputs.lambda_function_url }}
+          NEXT_PUBLIC_API_URL: ${{ needs.terraform.outputs.api_gateway_url }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

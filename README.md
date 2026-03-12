@@ -9,14 +9,14 @@ A professional, secure document management portal for CPA firms and their client
 ```
 ┌─────────────────┐       HTTPS        ┌──────────────────────┐
 │   Browser (SPA)  │ ───────────────── │  S3 Static Website    │
-│   Next.js 14     │                   │  tax4sure-website     │
+│   Next.js 14     │                   │  tax4sure             │
 └────────┬─────────┘                   └──────────────────────┘
          │
          │  API calls (fetch)
          ▼
 ┌──────────────────────┐    ┌─────────────────────┐
-│  Lambda Function URL  │───│  AWS Lambda (Node 20)│
-│  (public endpoint)    │   │  tax4sure-api        │
+│  API Gateway (HTTP)   │───│  AWS Lambda (Node 20)│
+│  tax4sure-api         │   │  tax4sure-api        │
 └───────────────────────┘   └──────────┬───────────┘
                                        │
                          ┌─────────────┼─────────────┐
@@ -27,15 +27,16 @@ A professional, secure document management portal for CPA firms and their client
                   └────────────┘ └──────────┘ └──────────────┘
 ```
 
-| Layer | Technology | Hosting |
+| Layer | Technology | Details |
 |---|---|---|
-| Frontend | Next.js 14 (static export) + TypeScript | S3 static website |
-| Backend API | AWS Lambda (Node.js 20) | Lambda Function URL |
-| Database | DynamoDB (PAY_PER_REQUEST) | AWS |
-| File Storage | S3 (private bucket, pre-signed URLs) | AWS |
-| Auth | JWT (jsonwebtoken) + bcrypt | Lambda |
-| Infrastructure | Terraform | S3 remote state |
-| CI/CD | GitHub Actions + OIDC | On push to `main` |
+| Frontend | Next.js 14 (static export) | Hosted on S3 with static website hosting |
+| API Gateway | AWS API Gateway HTTP API | Routes all requests to Lambda |
+| Backend | AWS Lambda (Node.js 20) | Handles auth + document operations |
+| Database | DynamoDB (PAY_PER_REQUEST) | Stores users (username, email, password hash) |
+| File Storage | S3 (private bucket) | Documents accessed via pre-signed URLs |
+| Auth | JWT + bcrypt | 30-day tokens, 12-round salt hashing |
+| IaC | Terraform | S3 remote state backend |
+| CI/CD | GitHub Actions + OIDC | Fully automated on push to `main` |
 
 ---
 
@@ -43,6 +44,7 @@ A professional, secure document management portal for CPA firms and their client
 
 - **Secure Authentication** — JWT tokens + bcrypt password hashing (12 salt rounds)
 - **DynamoDB User Store** — Serverless, zero-maintenance user database
+- **API Gateway** — HTTP API fronting Lambda with CORS support
 - **S3 Document Storage** — Private bucket with pre-signed upload/download URLs
 - **Tax Year Organization** — Dedicated folders for 2022–2026
 - **Drag & Drop Uploads** — Multi-file with per-file progress bars
@@ -50,38 +52,34 @@ A professional, secure document management portal for CPA firms and their client
 - **Responsive Design** — Mobile-first, collapsible sidebar
 - **Professional UI** — Framer Motion animations, skeleton loaders, toast notifications
 - **GitHub OIDC** — No long-lived AWS keys; CI/CD uses short-lived role credentials
+- **Auto-generated JWT Secret** — Created by Terraform via `random_password`, stored in state
 
 ---
 
-## Prerequisites
+## AWS Resources Created by Terraform
+
+| Resource | Name | Purpose |
+|---|---|---|
+| S3 Bucket | `tax4sure` | Static website hosting |
+| S3 Bucket | `tax4suredocuments` | Private document storage |
+| S3 Bucket | `tax4surelambdaartifacts` | Lambda deployment ZIPs |
+| DynamoDB Table | `tax4sure-users` | User accounts (username PK, email GSI) |
+| Lambda Function | `tax4sure-api` | Backend API (Node.js 20, 512MB, 30s timeout) |
+| API Gateway | `tax4sure-api` | HTTP API routing to Lambda |
+| IAM Role | `tax4sure-lambda-role` | Lambda execution (DynamoDB + S3 access) |
+
+---
+
+## Prerequisites (One-Time Setup)
 
 | Requirement | Details |
 |---|---|
-| **AWS Account** | With an OIDC role for GitHub Actions (broad permissions — see below) |
-| **Terraform State Bucket** | `terraform-state-geekyrbhalala` must exist in `us-east-1` |
-| **Node.js** | v20+ (for local development only) |
+| **AWS Account** | Account ID: `920373017082` |
+| **OIDC Provider** | GitHub Actions OIDC provider (already configured) |
+| **OIDC Role** | `github-actions-global` — works for all `geekyrbhalala/*` repos |
+| **Terraform State Bucket** | `terraform-state-geekyrbhalala` in `us-east-1` |
 
-### GitHub OIDC Provider & Role (one-time setup)
-
-You need an IAM OIDC identity provider for GitHub and a role with permissions for:
-S3, DynamoDB, Lambda, IAM, CloudWatch Logs.
-
-If you haven't already created the OIDC provider:
-
-```bash
-aws iam create-open-id-connect-provider \
-  --url https://token.actions.githubusercontent.com \
-  --client-id-list sts.amazonaws.com \
-  --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
-```
-
-The role's trust policy must allow your GitHub repo to assume it.
-
-### Terraform State Bucket (one-time setup)
-
-```bash
-aws s3api create-bucket --bucket terraform-state-geekyrbhalala --region us-east-1
-```
+All of these already exist in your account. No additional setup needed.
 
 ---
 
@@ -93,9 +91,9 @@ Go to **github.com/geekyrbhalala/tax4sure → Settings → Secrets and variables
 
 | Secret | Value |
 |---|---|
-| `AWS_ROLE_ARN` | ARN of your GitHub Actions OIDC role |
+| `AWS_ROLE_ARN` | `arn:aws:iam::920373017082:role/github-actions-global` |
 
-That's the **only** secret. Everything else is hardcoded or auto-generated.
+That's the **only** secret. JWT secret is auto-generated by Terraform. All bucket names and resource names are hardcoded.
 
 ### Step 2: Push & Deploy
 
@@ -103,18 +101,31 @@ That's the **only** secret. Everything else is hardcoded or auto-generated.
 git push origin main
 ```
 
-GitHub Actions automatically runs three jobs in order:
+Or trigger manually: **Actions → Deploy Tax4Sure → Run workflow**
 
-1. **Terraform Apply** — Provisions all AWS resources (S3 buckets, DynamoDB, Lambda, IAM roles). JWT secret is auto-generated and stored in Terraform state.
-2. **Deploy Lambda** — Compiles TypeScript, packages a ZIP, uploads to S3, updates the Lambda function.
-3. **Deploy Website** — Builds Next.js (using the Lambda URL from Terraform output), syncs static files to S3.
+### What happens automatically:
+
+```
+git push
+  │
+  ▼
+┌─────────────────────────┐
+│  Job 1: Terraform Apply  │  Creates/updates all AWS resources
+└────────────┬────────────┘
+             │ outputs api_gateway_url
+       ┌─────┴──────┐
+       ▼            ▼
+┌────────────┐ ┌────────────────┐
+│ Job 2:     │ │ Job 3:         │
+│ Deploy     │ │ Deploy Website │  Builds Next.js with API URL
+│ Lambda     │ │ to S3          │  from Terraform output
+└────────────┘ └────────────────┘
+```
 
 ### Step 3: Verify
 
-After the workflow completes:
-
 - **Website:** `http://tax4sure.s3-website-us-east-1.amazonaws.com`
-- **API:** `curl <lambda_function_url>/api/auth/login` → returns 400 (missing body)
+- **API:** `curl https://<api-id>.execute-api.us-east-1.amazonaws.com/api/auth/login` → returns 400
 - **Sign up:** Create an account through the website
 
 ---
@@ -125,19 +136,19 @@ After the workflow completes:
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` with your values:
+Edit `.env.local`:
 
 ```env
-NEXT_PUBLIC_API_URL=https://xxx.lambda-url.us-east-1.on.aws/
+NEXT_PUBLIC_API_URL=https://<api-id>.execute-api.us-east-1.amazonaws.com
 ```
 
-Then run:
+Then:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The frontend runs locally but API calls go to the deployed Lambda.
+Open [http://localhost:3000](http://localhost:3000). Frontend runs locally, API calls go to the deployed Lambda via API Gateway.
 
 ---
 
@@ -161,8 +172,7 @@ tax4sure/
 │   └── globals.css                 # Global styles + Tailwind
 │
 ├── components/
-│   ├── auth/
-│   │   └── BrandPanel.tsx          # Left branding panel for auth pages
+│   ├── auth/BrandPanel.tsx         # Left branding panel for auth pages
 │   ├── dashboard/
 │   │   ├── YearFolderCard.tsx      # Tax year folder card
 │   │   ├── DocumentUploader.tsx    # Drag-and-drop multi-file uploader
@@ -170,7 +180,7 @@ tax4sure/
 │   ├── layout/
 │   │   ├── Navbar.tsx              # Top navigation bar
 │   │   └── Sidebar.tsx             # Collapsible sidebar
-│   ├── ui/                         # Base UI components (shadcn/ui style)
+│   ├── ui/                         # Base UI components (shadcn/ui)
 │   └── providers.tsx               # AuthProvider + Toaster wrapper
 │
 ├── lib/
@@ -180,7 +190,7 @@ tax4sure/
 │   ├── types.ts                    # Shared TypeScript interfaces
 │   └── utils.ts                    # Shared utilities + constants
 │
-├── lambda/                         # AWS Lambda backend (separate package)
+├── lambda/                         # AWS Lambda backend
 │   ├── index.ts                    # Router (maps paths to handlers)
 │   ├── handlers/
 │   │   ├── auth.ts                 # Login + registration handlers
@@ -193,18 +203,17 @@ tax4sure/
 │   └── tsconfig.json
 │
 ├── terraform/                      # Infrastructure as Code
-│   ├── providers.tf                # AWS provider + S3 backend
+│   ├── providers.tf                # AWS + random + archive providers, S3 backend
 │   ├── variables.tf                # Input variables
-│   ├── dynamodb.tf                 # DynamoDB users table
+│   ├── dynamodb.tf                 # DynamoDB users table + GSI
 │   ├── s3.tf                       # S3 buckets (website, documents, artifacts)
-│   ├── lambda.tf                   # Lambda function + function URL
+│   ├── lambda.tf                   # Lambda + API Gateway HTTP API
 │   ├── iam.tf                      # IAM role (Lambda execution)
 │   └── outputs.tf                  # Terraform outputs
 │
 ├── .github/workflows/
-│   └── deploy.yml                  # CI/CD: build + deploy on push to main
+│   └── deploy.yml                  # CI/CD: Terraform → Lambda → Website
 │
-├── .env.local.example              # Environment variables template
 ├── package.json                    # Frontend dependencies
 ├── next.config.mjs                 # Next.js config (static export)
 ├── tailwind.config.ts              # Tailwind CSS config
@@ -215,7 +224,7 @@ tax4sure/
 
 ## API Endpoints
 
-All endpoints are served by the Lambda function at the `NEXT_PUBLIC_API_URL` base.
+All endpoints are served via API Gateway at the `NEXT_PUBLIC_API_URL` base.
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
@@ -226,7 +235,7 @@ All endpoints are served by the Lambda function at the `NEXT_PUBLIC_API_URL` bas
 | `POST` | `/api/documents/presign-upload` | Yes | Get a pre-signed S3 upload URL |
 | `DELETE` | `/api/documents/delete?fileId=...` | Yes | Delete a document |
 
-Auth endpoints accept JSON bodies. Protected endpoints require `Authorization: Bearer <token>`.
+Protected endpoints require `Authorization: Bearer <token>`.
 
 ---
 
@@ -244,14 +253,49 @@ Auth endpoints accept JSON bodies. Protected endpoints require `Authorization: B
 ## Security
 
 - Passwords hashed with **bcrypt (12 salt rounds)** — never stored in plaintext
-- JWT tokens for stateless authentication
-- All document endpoints validate the JWT before processing
-- File uploads go through **pre-signed S3 URLs** — files never pass through Lambda
-- File ownership enforced: users can only access `clients/{username}/` paths
-- Input validation via **Zod** schemas on all endpoints
-- Documents bucket is **private** — all public access blocked
-- GitHub Actions uses **OIDC** — no long-lived AWS credentials stored as secrets
-- CORS headers set on Lambda responses
+- **JWT tokens** for stateless auth (30-day expiry, auto-generated secret)
+- All document endpoints validate JWT before processing
+- File uploads via **pre-signed S3 URLs** — files never pass through Lambda
+- **File ownership enforced:** users can only access `clients/{username}/` paths
+- **Input validation** via Zod schemas on all endpoints
+- Documents bucket is **fully private** — all public access blocked
+- **GitHub OIDC** — no long-lived AWS credentials anywhere
+- **CORS** configured on both API Gateway and S3
+
+---
+
+## Cost Estimate
+
+| Resource | Free Tier (12 months) | After Free Tier |
+|---|---|---|
+| S3 (3 buckets) | 5 GB storage, 20K GETs | ~$0.05/mo |
+| DynamoDB | 25 WCU + 25 RCU | ~$0/mo (PAY_PER_REQUEST) |
+| Lambda | 1M requests + 400K GB-sec | ~$0/mo for light use |
+| API Gateway | 1M HTTP API calls/mo | $1/million requests |
+| CloudWatch Logs | 5 GB ingested | $0.50/GB |
+| **Total** | **$0/mo** | **< $1/mo** |
+
+No EC2, NAT Gateway, RDS, or CloudFront — the entire stack runs on AWS serverless free tier.
+
+---
+
+## CI/CD Pipeline
+
+The GitHub Actions workflow (`.github/workflows/deploy.yml`) runs on every push to `main` or via manual trigger.
+
+**Job 1: Terraform Apply**
+1. Configure AWS via OIDC
+2. `terraform init` + `terraform apply -auto-approve`
+3. Export `api_gateway_url` output for downstream jobs
+
+**Job 2: Deploy Lambda** (depends on Job 1)
+1. Install + compile Lambda TypeScript
+2. Package ZIP with `node_modules`
+3. Upload to S3, update Lambda function code
+
+**Job 3: Deploy Website** (depends on Job 1)
+1. Install + build Next.js (`NEXT_PUBLIC_API_URL` = API Gateway URL from Job 1)
+2. Sync static files to S3 with appropriate cache headers
 
 ---
 
@@ -260,35 +304,13 @@ Auth endpoints accept JSON bodies. Protected endpoints require `Authorization: B
 | Variable | Default | Description |
 |---|---|---|
 | `aws_region` | `us-east-1` | AWS region |
-| `website_bucket_name` | `tax4sure-website` | S3 bucket for static site |
-| `documents_bucket_name` | `tax4sure-documents` | S3 bucket for client documents |
-| `lambda_artifacts_bucket` | `tax4sure-lambda-artifacts` | S3 bucket for Lambda ZIP |
+| `website_bucket_name` | `tax4sure` | S3 bucket for static site |
+| `documents_bucket_name` | `tax4suredocuments` | S3 bucket for client documents |
+| `lambda_artifacts_bucket` | `tax4surelambdaartifacts` | S3 bucket for Lambda ZIP |
 | `dynamodb_table_name` | `tax4sure-users` | DynamoDB table name |
-| `jwt_secret` | *(required)* | Secret for signing JWT tokens (min 32 chars) |
-| `github_repo` | `geekyrbhalala/tax4sure` | GitHub repo allowed to assume OIDC role |
 | `environment` | `prod` | Environment tag |
 
----
-
-## CI/CD Pipeline
-
-The GitHub Actions workflow (`.github/workflows/deploy.yml`) runs on every push to `main`:
-
-**Job 1: Deploy Lambda API**
-1. Checkout code
-2. Install Lambda dependencies (`npm ci`)
-3. Compile TypeScript
-4. Package `dist/` + `node_modules/` into `lambda.zip`
-5. Assume AWS role via OIDC
-6. Upload ZIP to `s3://tax4sure-lambda-artifacts/api/lambda.zip`
-7. Update Lambda function code
-
-**Job 2: Deploy Static Website**
-1. Checkout code
-2. Install frontend dependencies (`npm ci`)
-3. Build static site (`next build` with `output: "export"`)
-4. Assume AWS role via OIDC
-5. Sync `out/` to `s3://tax4sure-website` with cache headers
+No secrets in variables — JWT secret is auto-generated by Terraform's `random_password` resource.
 
 ---
 

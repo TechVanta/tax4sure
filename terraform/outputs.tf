@@ -3,9 +3,9 @@ output "website_url" {
   value       = "http://${aws_s3_bucket_website_configuration.website.website_endpoint}"
 }
 
-output "lambda_function_url" {
-  description = "Lambda Function URL (API endpoint)"
-  value       = aws_lambda_function_url.api.function_url
+output "api_gateway_url" {
+  description = "API Gateway endpoint URL"
+  value       = aws_apigatewayv2_api.api.api_endpoint
 }
 
 output "documents_bucket_name" {
