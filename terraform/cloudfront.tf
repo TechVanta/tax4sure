@@ -127,6 +127,4 @@ resource "aws_cloudfront_distribution" "website" {
     Name        = "Tax4Sure Website CDN"
     Environment = var.environment
   }
-
-  depends_on = [aws_s3_bucket_policy.website]
 }
