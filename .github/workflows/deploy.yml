@@ -4,6 +4,19 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      deploy_infra:
+        description: "Force infrastructure deploy (Terraform)"
+        type: boolean
+        default: false
+      deploy_lambda:
+        description: "Force Lambda deploy"
+        type: boolean
+        default: false
+      deploy_website:
+        description: "Force website deploy"
+        type: boolean
+        default: false
 
 permissions:
   id-token: write
@@ -13,10 +26,42 @@ env:
   AWS_REGION: us-east-1
 
 jobs:
-  # ── 1. Provision / update infrastructure ────────────────────────────────────
+  # ── 0. Detect what changed ────────────────────────────────────────────────
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      infra:   ${{ steps.check.outputs.infra }}
+      lambda:  ${{ steps.check.outputs.lambda }}
+      website: ${{ steps.check.outputs.website }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check changed paths
+        id: check
+        run: |
+          # On workflow_dispatch there is no previous commit — treat as all changed
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "infra=${{ inputs.deploy_infra }}"     >> "$GITHUB_OUTPUT"
+            echo "lambda=${{ inputs.deploy_lambda }}"   >> "$GITHUB_OUTPUT"
+            echo "website=${{ inputs.deploy_website }}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          CHANGED=$(git diff --name-only HEAD~1 HEAD)
+
+          echo "infra=$(echo "$CHANGED"   | grep -q '^terraform/'                                              && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "lambda=$(echo "$CHANGED"  | grep -q '^lambda/'                                                 && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "website=$(echo "$CHANGED" | grep -qE '^(app|components|public|package.*\.json|next\.config|tailwind|tsconfig)' && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  # ── 1. Infrastructure (only when terraform/ changes) ─────────────────────
   terraform:
     name: Terraform Apply
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.infra == 'true'
     outputs:
       api_gateway_url:            ${{ steps.tf-output.outputs.api_gateway_url }}
       cloudfront_distribution_id: ${{ steps.tf-output.outputs.cloudfront_distribution_id }}
@@ -48,11 +93,57 @@ jobs:
           echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> "$GITHUB_OUTPUT"
         working-directory: terraform
 
-  # ── 2. Build & deploy Lambda API ────────────────────────────────────────────
+  # ── 1b. Read outputs from state when Terraform didn't run ────────────────
+  #   Lambda and website deploys always need the API URL and CF distribution
+  #   ID. This lightweight job reads them straight from the remote state.
+  read-outputs:
+    name: Read Terraform Outputs
+    runs-on: ubuntu-latest
+    needs: [changes, terraform]
+    # Run when lambda or website changed, regardless of whether terraform ran
+    if: |
+      always() && !failure() && !cancelled() &&
+      (needs.changes.outputs.lambda == 'true' || needs.changes.outputs.website == 'true')
+    outputs:
+      api_gateway_url:            ${{ steps.out.outputs.api_gateway_url }}
+      cloudfront_distribution_id: ${{ steps.out.outputs.cloudfront_distribution_id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init (read-only)
+        run: terraform init
+        working-directory: terraform
+
+      - name: Read outputs from state
+        id: out
+        run: |
+          # Prefer outputs from the terraform job if it ran; fall back to state
+          API_URL="${{ needs.terraform.outputs.api_gateway_url }}"
+          CF_ID="${{ needs.terraform.outputs.cloudfront_distribution_id }}"
+
+          [ -z "$API_URL" ] && API_URL=$(terraform output -raw api_gateway_url)
+          [ -z "$CF_ID"   ] && CF_ID=$(terraform output -raw cloudfront_distribution_id)
+
+          echo "api_gateway_url=$API_URL"             >> "$GITHUB_OUTPUT"
+          echo "cloudfront_distribution_id=$CF_ID"    >> "$GITHUB_OUTPUT"
+        working-directory: terraform
+
+  # ── 2. Lambda API (only when lambda/ changes) ────────────────────────────
   deploy-lambda:
     name: Deploy Lambda API
     runs-on: ubuntu-latest
-    needs: terraform
+    needs: [changes, read-outputs]
+    if: always() && !failure() && !cancelled() && needs.changes.outputs.lambda == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -92,11 +183,12 @@ jobs:
             --s3-bucket tax4surelambdaartifacts \
             --s3-key api/lambda.zip
 
-  # ── 3. Build & deploy static website ────────────────────────────────────────
+  # ── 3. Website (only when app/components/public/config changes) ──────────
   deploy-website:
     name: Deploy Website
     runs-on: ubuntu-latest
-    needs: terraform
+    needs: [changes, read-outputs]
+    if: always() && !failure() && !cancelled() && needs.changes.outputs.website == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -111,7 +203,7 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ needs.terraform.outputs.api_gateway_url }}
+          NEXT_PUBLIC_API_URL: ${{ needs.read-outputs.outputs.api_gateway_url }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -136,5 +228,5 @@ jobs:
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} \
+            --distribution-id ${{ needs.read-outputs.outputs.cloudfront_distribution_id }} \
             --paths "/*"
