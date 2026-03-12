@@ -157,7 +157,7 @@ export default function AdminDashboard() {
                     transition={{ delay: i * 0.04 }}
                   >
                     <Link
-                      href={`/admin/clients/${client.username}`}
+                      href={`/admin/clients?username=${encodeURIComponent(client.username)}`}
                       className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors group"
                     >
                       <div className="flex items-center gap-4">
