@@ -22,3 +22,9 @@ output "dynamodb_table_name" {
   description = "DynamoDB users table name"
   value       = aws_dynamodb_table.users.name
 }
+
+output "admin_password" {
+  description = "Admin portal password — run: terraform output -raw admin_password"
+  value       = random_password.admin_password.result
+  sensitive   = true
+}

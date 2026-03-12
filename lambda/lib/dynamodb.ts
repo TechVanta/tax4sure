@@ -4,6 +4,7 @@ import {
   GetCommand,
   PutCommand,
   QueryCommand,
+  ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 
 const client = new DynamoDBClient({ region: process.env.AWS_REGION || "us-east-1" });
@@ -43,6 +44,16 @@ export async function findUserByUsernameOrEmail(usernameOrEmail: string): Promis
   const byUsername = await findUserByUsername(usernameOrEmail);
   if (byUsername) return byUsername;
   return findUserByEmail(usernameOrEmail);
+}
+
+export async function listAllUsers(): Promise<Omit<User, "passwordHash">[]> {
+  const result = await docClient.send(
+    new ScanCommand({
+      TableName: TABLE,
+      ProjectionExpression: "id, username, email, fullName, createdAt",
+    })
+  );
+  return (result.Items as Omit<User, "passwordHash">[]) ?? [];
 }
 
 export async function createUser(data: Omit<User, "id">): Promise<User> {

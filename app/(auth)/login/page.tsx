@@ -17,7 +17,7 @@ import { useAuth } from "@/lib/auth-context";
 import { apiCall } from "@/lib/api-client";
 
 const loginSchema = z.object({
-  usernameOrEmail: z.string().min(1, "Please enter your username or email"),
+  usernameOrEmail: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Please enter your password"),
   rememberMe: z.boolean().optional(),
 });
@@ -83,10 +83,11 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="usernameOrEmail">Username or Email</Label>
+            <Label htmlFor="usernameOrEmail">Email Address</Label>
             <Input
               id="usernameOrEmail"
-              placeholder="john.doe or john@example.com"
+              type="email"
+              placeholder="john@example.com"
               {...register("usernameOrEmail")}
               disabled={isLoading}
               className={errors.usernameOrEmail ? "border-red-400 focus-visible:ring-red-400" : ""}

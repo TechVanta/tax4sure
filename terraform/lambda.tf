@@ -10,6 +10,15 @@ resource "random_password" "jwt_secret" {
   }
 }
 
+resource "random_password" "admin_password" {
+  length  = 20
+  special = false
+
+  lifecycle {
+    ignore_changes = [length, special]
+  }
+}
+
 # Create a minimal valid ZIP so Terraform can create the Lambda on first apply.
 # GitHub Actions will overwrite this with the real code on every push.
 data "archive_file" "lambda_placeholder" {
@@ -51,6 +60,7 @@ resource "aws_lambda_function" "api" {
       DYNAMODB_TABLE_NAME   = aws_dynamodb_table.users.name
       S3_BUCKET_NAME        = aws_s3_bucket.documents.id
       JWT_SECRET            = random_password.jwt_secret.result
+      ADMIN_PASSWORD        = random_password.admin_password.result
       FRONTEND_URL          = "https://${aws_cloudfront_distribution.website.domain_name}"
     }
   }

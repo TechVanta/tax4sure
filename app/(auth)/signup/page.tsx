@@ -19,14 +19,8 @@ const signupSchema = z
   .object({
     fullName: z.string().min(2, "Full name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
-    username: z
-      .string()
-      .min(3, "Username must be at least 3 characters")
-      .max(30, "Username must be at most 30 characters")
-      .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, and underscores"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
-    mobile: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -101,6 +95,9 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupForm) => {
     setIsLoading(true);
+    // Auto-generate a username from email (not shown to user)
+    const baseUsername = data.email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+    const username = `${baseUsername}_${Math.random().toString(36).slice(2, 6)}`;
     try {
       const res = await apiCall("/api/auth/register", {
         method: "POST",
@@ -108,9 +105,8 @@ export default function SignupPage() {
         body: JSON.stringify({
           fullName: data.fullName,
           email: data.email,
-          username: data.username,
+          username,
           password: data.password,
-          mobile: data.mobile,
         }),
       });
 
@@ -179,21 +175,6 @@ export default function SignupPage() {
             )}
           </div>
 
-          {/* Username */}
-          <div className="space-y-1.5">
-            <Label htmlFor="username">Username *</Label>
-            <Input
-              id="username"
-              placeholder="john_doe"
-              {...register("username")}
-              disabled={isLoading}
-              className={errors.username ? "border-red-400" : ""}
-            />
-            {errors.username && (
-              <p className="text-xs text-red-500">{errors.username.message}</p>
-            )}
-          </div>
-
           {/* Password */}
           <div className="space-y-1.5">
             <Label htmlFor="password">Password *</Label>
@@ -245,18 +226,6 @@ export default function SignupPage() {
             {errors.confirmPassword && (
               <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>
             )}
-          </div>
-
-          {/* Mobile */}
-          <div className="space-y-1.5">
-            <Label htmlFor="mobile">Mobile Number <span className="text-muted-foreground font-normal">(optional)</span></Label>
-            <Input
-              id="mobile"
-              type="tel"
-              placeholder="+1 (555) 000-0000"
-              {...register("mobile")}
-              disabled={isLoading}
-            />
           </div>
 
           <Button

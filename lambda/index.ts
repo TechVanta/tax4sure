@@ -6,6 +6,11 @@ import {
   handleDeleteFile,
   handlePresignUpload,
 } from "./handlers/documents";
+import {
+  handleAdminLogin,
+  handleAdminListClients,
+  handleAdminListFiles,
+} from "./handlers/admin";
 import { preflight } from "./lib/response";
 
 export const handler = async (
@@ -24,6 +29,11 @@ export const handler = async (
   if (method === "GET" && path === "/api/documents/stats") return handleStats(event);
   if (method === "DELETE" && path === "/api/documents/delete") return handleDeleteFile(event);
   if (method === "POST" && path === "/api/documents/presign-upload") return handlePresignUpload(event);
+
+  // Admin routes
+  if (method === "POST" && path === "/api/admin/login") return handleAdminLogin(event);
+  if (method === "GET" && path === "/api/admin/clients") return handleAdminListClients(event);
+  if (method === "GET" && path === "/api/admin/files") return handleAdminListFiles(event);
 
   return {
     statusCode: 404,

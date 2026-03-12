@@ -32,17 +32,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
-      {/* Logo area (desktop only) */}
-      <div className="hidden md:flex items-center px-4 py-4 border-b border-white/10">
-        <Image
-          src="/logo-white.svg"
-          alt="Tax4Sure"
-          width={180}
-          height={50}
-          priority
-        />
-      </div>
-
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         <p className="px-3 mb-2 text-xs font-semibold text-white/40 uppercase tracking-wider">

@@ -1,10 +1,11 @@
-import { CheckCircle2, Lock } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 
 const features = [
-  "256-bit encrypted document storage",
-  "Organized by tax year",
-  "Access anywhere, any device",
+  "Personal & corporate tax filing (T1, T2)",
+  "GST / HST returns & bookkeeping",
+  "Year-round tax advisory support",
+  "Secure client portal — access anywhere",
   "Managed by experienced tax professionals",
 ];
 
@@ -28,11 +29,11 @@ export function BrandPanel() {
 
         <div className="mt-10">
           <h2 className="text-4xl font-bold leading-tight">
-            Your documents.<br />
-            <span className="text-gold-400">Secured.</span>
+            Your one-stop<br />
+            <span className="text-gold-400">tax solution.</span>
           </h2>
           <p className="mt-4 text-lg text-white/70 font-light leading-relaxed">
-            Secure. Organized. Trusted.
+            From personal returns to corporate filings — we handle it all.
           </p>
         </div>
 
@@ -49,16 +50,9 @@ export function BrandPanel() {
         </ul>
       </div>
 
-      {/* Bottom: security badge */}
+      {/* Bottom: copyright */}
       <div className="relative z-10 mt-10">
-        <div className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
-          <Lock className="h-5 w-5 text-gold-400" />
-          <div>
-            <p className="text-sm font-semibold">Bank-Level Security</p>
-            <p className="text-xs text-white/60">Your data is always protected</p>
-          </div>
-        </div>
-        <p className="mt-6 text-xs text-white/30 text-center">
+        <p className="text-xs text-white/30 text-center">
           © 2026 Tax4Sure. All rights reserved.
         </p>
       </div>
