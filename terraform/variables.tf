@@ -7,19 +7,19 @@ variable "aws_region" {
 variable "website_bucket_name" {
   description = "S3 bucket name for the static website (must be globally unique)"
   type        = string
-  default     = "tax4sure-website"
+  default     = "tax4sure"
 }
 
 variable "documents_bucket_name" {
   description = "S3 bucket name for client document storage (must be globally unique)"
   type        = string
-  default     = "tax4sure-documents"
+  default     = "tax4suredocuments"
 }
 
 variable "lambda_artifacts_bucket" {
   description = "S3 bucket for storing Lambda deployment ZIPs"
   type        = string
-  default     = "tax4sure-lambda-artifacts"
+  default     = "tax4surelambdaartifacts"
 }
 
 variable "dynamodb_table_name" {
