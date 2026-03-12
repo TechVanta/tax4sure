@@ -20,7 +20,7 @@ export function HomeNav() {
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-white/70">
           <a href="#services" className="hover:text-white transition-colors">Services</a>
           <a href="#why-us"   className="hover:text-white transition-colors">Why Us</a>
-          <a href="#contact"  className="hover:text-white transition-colors">Contact</a>
+          <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
         </nav>
 
         {/* CTA */}
@@ -53,7 +53,7 @@ export function HomeNav() {
         <div className="md:hidden border-t border-white/10 bg-[#0D1F4E] px-6 py-4 space-y-3">
           <a href="#services" onClick={() => setOpen(false)} className="block text-sm font-medium text-white/70 hover:text-white py-1">Services</a>
           <a href="#why-us"   onClick={() => setOpen(false)} className="block text-sm font-medium text-white/70 hover:text-white py-1">Why Us</a>
-          <a href="#contact"  onClick={() => setOpen(false)} className="block text-sm font-medium text-white/70 hover:text-white py-1">Contact</a>
+          <Link href="/contact" onClick={() => setOpen(false)} className="block text-sm font-medium text-white/70 hover:text-white py-1">Contact</Link>
           <Link href="/login" onClick={() => setOpen(false)} className="block text-sm font-semibold text-white/70 hover:text-white py-1">Client Login</Link>
         </div>
       )}

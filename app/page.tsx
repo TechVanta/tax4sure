@@ -345,43 +345,83 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer className="border-t border-gray-100 bg-white py-12">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div>
-              <p className="text-xl font-black tracking-tight">
-                <span className="text-[#0D1F4E]">Tax</span>
+      <footer className="bg-[#0D1F4E] text-white">
+        <div className="mx-auto max-w-7xl px-6 pt-14 pb-8">
+
+          {/* Top grid */}
+          <div className="grid grid-cols-2 gap-10 md:grid-cols-4 mb-12">
+
+            {/* Brand column */}
+            <div className="col-span-2 md:col-span-1">
+              <p className="text-2xl font-black tracking-tight">
+                <span className="text-white">Tax</span>
                 <span className="text-[#C9A84C]">4</span>
-                <span className="text-[#2B5BA8]">Sure</span>
+                <span className="text-[#7EB3E8]">Sure</span>
               </p>
-              <p className="mt-1 text-xs tracking-widest text-gray-400">
+              <p className="mt-1 text-xs tracking-widest text-white/40 uppercase">
                 CPA · TAX · HST · GST · BOOKKEEPING
               </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-400">
-              <span>Personal Tax (T1)</span>
-              <span>·</span>
-              <span>Corporate Tax (T2)</span>
-              <span>·</span>
-              <span>GST/HST Filing</span>
-              <span>·</span>
-              <span>Bookkeeping</span>
-            </div>
-
-            <div className="flex flex-col items-center gap-1 md:items-end">
+              <p className="mt-4 text-sm text-white/55 leading-relaxed max-w-[220px]">
+                Your one-stop solution for personal and business tax filing in Canada.
+              </p>
               <a
                 href="mailto:tax4sure@gmail.com"
-                className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#C9A84C] transition-colors"
+                className="mt-5 inline-flex items-center gap-2 text-sm text-[#C9A84C] hover:text-[#E8C060] transition-colors font-medium"
               >
-                <Mail className="h-3.5 w-3.5" />
+                <Mail className="h-4 w-4" />
                 tax4sure@gmail.com
               </a>
-              <p className="text-sm text-gray-400">
-                © {new Date().getFullYear()} Tax4Sure. All rights reserved.
-              </p>
+            </div>
+
+            {/* Services column */}
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Services</h3>
+              <ul className="space-y-2.5 text-sm text-white/65">
+                <li><a href="#services" className="hover:text-white transition-colors">Personal Tax (T1)</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Self-Employed</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Corporate Tax (T2)</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">GST / HST Returns</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Bookkeeping</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Tax Advisory</a></li>
+              </ul>
+            </div>
+
+            {/* Company column */}
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Company</h3>
+              <ul className="space-y-2.5 text-sm text-white/65">
+                <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Services</a></li>
+                <li><a href="#why-us" className="hover:text-white transition-colors">Why Us</a></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              </ul>
+            </div>
+
+            {/* Client portal column */}
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Client Portal</h3>
+              <ul className="space-y-2.5 text-sm text-white/65">
+                <li><Link href="/login" className="hover:text-white transition-colors">Client Login</Link></li>
+                <li><Link href="/signup" className="hover:text-white transition-colors">Create Account</Link></li>
+              </ul>
+              <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-xs text-white/50 leading-relaxed">
+                  Securely upload and manage your tax documents online — available 24/7.
+                </p>
+              </div>
             </div>
           </div>
+
+          {/* Divider + bottom bar */}
+          <div className="border-t border-white/10 pt-6 flex flex-col items-center gap-3 md:flex-row md:justify-between">
+            <p className="text-xs text-white/30">
+              © {new Date().getFullYear()} Tax4Sure. All rights reserved.
+            </p>
+            <p className="text-xs text-white/30">
+              Tax services for individuals &amp; businesses across Canada.
+            </p>
+          </div>
+
         </div>
       </footer>
     </div>
