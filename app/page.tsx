@@ -1,3 +1,4 @@
+// Homepage – public marketing page
 import Link from "next/link";
 import {
   User,
