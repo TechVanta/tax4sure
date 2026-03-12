@@ -140,7 +140,7 @@ export default function HomePage() {
             description:
               "Professional Canadian tax filing and accounting services including T1 personal tax, T2 corporate tax, GST/HST filing, bookkeeping, and tax advisory.",
             url: "https://d8nnmu6vr11v0.cloudfront.net",
-            email: "tax4sure@gmail.com",
+            email: "tax4sureca@gmail.com",
             areaServed: {
               "@type": "Country",
               name: "Canada",
@@ -425,11 +425,11 @@ export default function HomePage() {
           <p className="mt-8 text-white/50 text-sm">
             Have a question?{" "}
             <a
-              href="mailto:tax4sure@gmail.com"
+              href="mailto:tax4sureca@gmail.com"
               className="inline-flex items-center gap-1.5 text-[#C9A84C] font-semibold hover:text-[#E8C060] transition-colors"
             >
               <Mail className="h-4 w-4" />
-              tax4sure@gmail.com
+              tax4sureca@gmail.com
             </a>
           </p>
         </div>
@@ -456,11 +456,11 @@ export default function HomePage() {
                 Your one-stop solution for personal and business tax filing in Canada.
               </p>
               <a
-                href="mailto:tax4sure@gmail.com"
+                href="mailto:tax4sureca@gmail.com"
                 className="mt-5 inline-flex items-center gap-2 text-sm text-[#C9A84C] hover:text-[#E8C060] transition-colors font-medium"
               >
                 <Mail className="h-4 w-4" />
-                tax4sure@gmail.com
+                tax4sureca@gmail.com
               </a>
             </div>
 

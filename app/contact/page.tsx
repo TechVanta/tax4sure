@@ -64,10 +64,10 @@ export default function ContactPage() {
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">Email Us</p>
                   <a
-                    href="mailto:tax4sure@gmail.com"
+                    href="mailto:tax4sureca@gmail.com"
                     className="mt-0.5 font-semibold text-[#0D1F4E] hover:text-[#C9A84C] transition-colors"
                   >
-                    tax4sure@gmail.com
+                    tax4sureca@gmail.com
                   </a>
                 </div>
               </div>
