@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 214 30% 97%;
+    --foreground: 222 60% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 60% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 60% 15%;
+    --primary: 220 64% 18%;       /* #0D1F4E deep navy */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 30% 93%;
+    --secondary-foreground: 222 60% 15%;
+    --muted: 214 30% 93%;
+    --muted-foreground: 215 18% 46%;
+    --accent: 38 54% 54%;         /* gold */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 28% 89%;
+    --input: 214 28% 89%;
+    --ring: 213 58% 50%;          /* brand blue for focus rings */
+    --radius: 0.625rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .auth-card {
+    @apply bg-white rounded-2xl shadow-2xl overflow-hidden;
+  }
+
+  .brand-panel {
+    @apply bg-navy-700 text-white flex flex-col justify-between p-10;
+  }
+
+  .year-card {
+    @apply bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-gold-500 transition-all duration-300 cursor-pointer p-6;
+  }
+
+  .doc-row {
+    @apply flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-100 hover:border-navy-300 hover:shadow-sm transition-all duration-200;
+  }
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Dropzone styles */
+.dropzone-active {
+  @apply border-navy-700 bg-navy-50;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}

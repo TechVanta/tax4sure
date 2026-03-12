@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" fill="none">
+  <defs>
+    <linearGradient id="shieldW" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="arrowW" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7EB3E8"/>
+      <stop offset="60%" stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#E8C060"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── SHIELD ICON ── -->
+  <path d="M10 28 L75 10 L140 28 L140 82 C140 118 75 148 75 148 C75 148 10 118 10 82 Z"
+        fill="url(#shieldW)"/>
+  <path d="M22 36 L75 21 L128 36 L128 82 C128 112 75 138 75 138 C75 138 22 112 22 82 Z"
+        fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+
+  <!-- Chart / trend line -->
+  <polyline points="35,105 52,85 65,92 82,65 100,55"
+            stroke="url(#arrowW)" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <polygon points="100,55 85,52 90,67" fill="#C9A84C"/>
+  <line x1="100" y1="55" x2="115" y2="35"
+        stroke="#C9A84C" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="115,35 100,38 108,50" fill="#C9A84C"/>
+
+  <!-- ── WORDMARK ── -->
+  <!-- "Tax4" in white -->
+  <text x="162" y="100"
+        font-family="Inter, Arial Black, sans-serif"
+        font-size="72" font-weight="900"
+        letter-spacing="-1"
+        fill="#ffffff">Tax4</text>
+
+  <!-- "Sure" in light blue -->
+  <text x="330" y="100"
+        font-family="Inter, Arial Black, sans-serif"
+        font-size="72" font-weight="900"
+        letter-spacing="-1"
+        fill="#7EB3E8">S</text>
+  <text x="373" y="100"
+        font-family="Inter, Arial Black, sans-serif"
+        font-size="72" font-weight="900"
+        letter-spacing="-1"
+        fill="#7EB3E8">ure</text>
+
+  <!-- Gold checkmark over 'u' -->
+  <path d="M413 52 L422 64 L440 38"
+        stroke="#C9A84C" stroke-width="5.5"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- ── TAGLINE ── -->
+  <text x="162" y="128"
+        font-family="Inter, Arial, sans-serif"
+        font-size="15.5" font-weight="500"
+        letter-spacing="1.8"
+        fill="#ffffff" opacity="0.45">TAX | HST | GST | BOOKKEEPING | ACCOUNTING</text>
+</svg>

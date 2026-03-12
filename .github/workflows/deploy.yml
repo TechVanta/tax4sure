@@ -1,0 +1,117 @@
+name: Deploy Tax4Sure
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  # Build and deploy Lambda API
+  deploy-lambda:
+    name: Build & Deploy Lambda API
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: lambda/package-lock.json
+
+      - name: Install Lambda dependencies
+        run: npm ci
+        working-directory: lambda
+
+      - name: Compile TypeScript
+        run: npx tsc --project tsconfig.json
+        working-directory: lambda
+
+      - name: Package Lambda ZIP
+        run: |
+          cp -r node_modules dist/
+          cd dist && zip -r ../lambda.zip .
+        working-directory: lambda
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload ZIP to S3
+        run: aws s3 cp lambda/lambda.zip s3://${{ secrets.LAMBDA_ARTIFACTS_BUCKET }}/api/lambda.zip
+
+      - name: Update Lambda function code
+        run: |
+          aws lambda update-function-code \
+            --function-name tax4sure-api \
+            --s3-bucket ${{ secrets.LAMBDA_ARTIFACTS_BUCKET }} \
+            --s3-key api/lambda.zip \
+            --region ${{ env.AWS_REGION }}
+
+  # Build and deploy static Next.js site to S3
+  deploy-website:
+    name: Build & Deploy Static Website
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync to S3 (assets with long cache)
+        run: |
+          aws s3 sync out/ s3://${{ secrets.WEBSITE_BUCKET }} \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "*.html"
+
+      - name: Sync to S3 (HTML with no cache)
+        run: |
+          aws s3 sync out/ s3://${{ secrets.WEBSITE_BUCKET }} \
+            --cache-control "public, max-age=0, must-revalidate" \
+            --include "*.html" \
+            --exclude "*"
+
+  # Lint check on PRs
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - run: npm run lint
+        env:
+          NEXT_PUBLIC_API_URL: "https://placeholder.lambda-url.us-east-1.on.aws"
