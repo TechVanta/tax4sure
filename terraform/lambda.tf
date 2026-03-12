@@ -51,7 +51,7 @@ resource "aws_lambda_function" "api" {
       DYNAMODB_TABLE_NAME   = aws_dynamodb_table.users.name
       S3_BUCKET_NAME        = aws_s3_bucket.documents.id
       JWT_SECRET            = random_password.jwt_secret.result
-      FRONTEND_URL          = "http://${aws_s3_bucket_website_configuration.website.website_endpoint}"
+      FRONTEND_URL          = "https://${aws_cloudfront_distribution.website.domain_name}"
     }
   }
 
@@ -75,7 +75,7 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["*"]
+    allow_origins = ["https://${aws_cloudfront_distribution.website.domain_name}"]
     allow_methods = ["GET", "POST", "DELETE", "OPTIONS"]
     allow_headers = ["Content-Type", "Authorization"]
     max_age       = 3600

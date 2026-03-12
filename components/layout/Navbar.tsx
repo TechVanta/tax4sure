@@ -52,10 +52,10 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
 
           <Link href="/dashboard" className="flex items-center">
             <Image
-              src="/logo-white.jpeg"
+              src="/logo-white.svg"
               alt="Tax4Sure"
-              width={180}
-              height={55}
+              width={200}
+              height={56}
               priority
             />
           </Link>

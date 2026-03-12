@@ -1,81 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" fill="none">
-  <defs>
-    <!-- Shield gradient: medium blue → dark navy -->
-    <linearGradient id="shieldOuter" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2B5BA8"/>
-      <stop offset="100%" stop-color="#0D1F4E"/>
-    </linearGradient>
-    <linearGradient id="shieldInner" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#3A6EC4"/>
-      <stop offset="100%" stop-color="#1B3A7A"/>
-    </linearGradient>
-    <!-- Arrow gradient: blue → gold -->
-    <linearGradient id="arrowGrad" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#3A6EC4"/>
-      <stop offset="60%" stop-color="#C9A84C"/>
-      <stop offset="100%" stop-color="#E8C060"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 122" fill="none">
 
-  <!-- ── SHIELD ICON ── -->
-  <!-- Outer shield -->
-  <path d="M10 28 L75 10 L140 28 L140 82 C140 118 75 148 75 148 C75 148 10 118 10 82 Z"
-        fill="url(#shieldOuter)"/>
-  <!-- Inner shield outline (white border effect) -->
-  <path d="M22 36 L75 21 L128 36 L128 82 C128 112 75 138 75 138 C75 138 22 112 22 82 Z"
-        fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3"/>
-  <!-- Inner shield fill (slightly lighter) -->
-  <path d="M26 39 L75 25 L124 39 L124 82 C124 109 75 134 75 134 C75 134 26 109 26 82 Z"
-        fill="url(#shieldInner)" opacity="0.6"/>
+  <!-- Wordmark: "Tax" navy · "4" gold · "Sure" blue -->
+  <text font-family="'Inter', 'Arial Black', sans-serif"
+        font-size="82" font-weight="900" letter-spacing="-3">
+    <tspan x="4" y="84" fill="#0D1F4E">Tax</tspan><tspan fill="#C9A84C">4</tspan><tspan fill="#2B5BA8">Sure</tspan>
+  </text>
 
-  <!-- Chart / trend line inside shield -->
-  <polyline points="35,105 52,85 65,92 82,65 100,55"
-            stroke="url(#arrowGrad)" stroke-width="5"
-            stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <!-- Arrow head at tip -->
-  <polygon points="100,55 85,52 90,67"
-           fill="#C9A84C"/>
-  <!-- Gold arrow shaft extension -->
-  <line x1="100" y1="55" x2="115" y2="35"
-        stroke="#C9A84C" stroke-width="5" stroke-linecap="round"/>
-  <polygon points="115,35 100,38 108,50"
-           fill="#C9A84C"/>
+  <!-- Gold accent rule -->
+  <rect x="4" y="94" width="432" height="3.5" rx="1.5" fill="#C9A84C"/>
 
-  <!-- ── WORDMARK ── -->
-  <!-- "Tax4" in dark navy -->
-  <text x="162" y="100"
-        font-family="Inter, Arial Black, sans-serif"
-        font-size="72" font-weight="900"
-        letter-spacing="-1"
-        fill="#0D1F4E">Tax4</text>
+  <!-- Tagline -->
+  <text x="6" y="115"
+        font-family="'Inter', Arial, sans-serif"
+        font-size="15" font-weight="600" letter-spacing="2.8"
+        fill="#0D1F4E" opacity="0.52">CPA · TAX · HST · GST · BOOKKEEPING</text>
 
-  <!-- "Sure" in steel blue -->
-  <text x="330" y="100"
-        font-family="Inter, Arial Black, sans-serif"
-        font-size="72" font-weight="900"
-        letter-spacing="-1"
-        fill="#4A7DB8">S</text>
-  <text x="373" y="100"
-        font-family="Inter, Arial Black, sans-serif"
-        font-size="72" font-weight="900"
-        letter-spacing="-1"
-        fill="#4A7DB8">re</text>
-
-  <!-- Gold checkmark over the "u" position -->
-  <text x="407" y="100"
-        font-family="Inter, Arial Black, sans-serif"
-        font-size="72" font-weight="900"
-        letter-spacing="-1"
-        fill="#4A7DB8">u</text>
-  <!-- Gold tick on top of 'u' -->
-  <path d="M413 52 L422 64 L440 38"
-        stroke="#C9A84C" stroke-width="5.5"
-        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-
-  <!-- ── TAGLINE ── -->
-  <text x="162" y="128"
-        font-family="Inter, Arial, sans-serif"
-        font-size="15.5" font-weight="600"
-        letter-spacing="1.8"
-        fill="#1B2B4B" opacity="0.65">TAX | HST | GST | BOOKKEEPING | ACCOUNTING</text>
 </svg>

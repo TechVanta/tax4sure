@@ -5,7 +5,7 @@ const features = [
   "256-bit encrypted document storage",
   "Organized by tax year",
   "Access anywhere, any device",
-  "Managed by certified professionals",
+  "Managed by experienced tax professionals",
 ];
 
 export function BrandPanel() {
@@ -19,10 +19,10 @@ export function BrandPanel() {
       {/* Top: Logo */}
       <div className="relative z-10">
         <Image
-          src="/logo-white.jpeg"
+          src="/logo-white.svg"
           alt="Tax4Sure"
-          width={180}
-          height={42}
+          width={200}
+          height={56}
           priority
         />
 

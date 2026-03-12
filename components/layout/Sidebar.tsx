@@ -35,10 +35,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Logo area (desktop only) */}
       <div className="hidden md:flex items-center px-4 py-4 border-b border-white/10">
         <Image
-          src="/logo-white.jpeg"
+          src="/logo-white.svg"
           alt="Tax4Sure"
-          width={160}
-          height={49}
+          width={180}
+          height={50}
           priority
         />
       </div>
@@ -124,10 +124,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             >
               <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
                 <Image
-                  src="/logo-white.jpeg"
+                  src="/logo-white.svg"
                   alt="Tax4Sure"
-                  width={150}
-                  height={46}
+                  width={170}
+                  height={47}
                 />
                 <button
                   onClick={onClose}

@@ -1,6 +1,11 @@
-output "website_url" {
-  description = "S3 static website URL"
-  value       = "http://${aws_s3_bucket_website_configuration.website.website_endpoint}"
+output "cloudfront_url" {
+  description = "HTTPS URL for the Tax4Sure website (via CloudFront)"
+  value       = "https://${aws_cloudfront_distribution.website.domain_name}"
+}
+
+output "cloudfront_distribution_id" {
+  description = "CloudFront distribution ID (used for cache invalidation)"
+  value       = aws_cloudfront_distribution.website.id
 }
 
 output "api_gateway_url" {
