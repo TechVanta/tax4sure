@@ -91,6 +91,19 @@ jobs:
         run: |
           echo "api_gateway_url=$(terraform output -raw api_gateway_url)" >> "$GITHUB_OUTPUT"
           echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> "$GITHUB_OUTPUT"
+          echo "cloudfront_url=$(terraform output -raw cloudfront_url)" >> "$GITHUB_OUTPUT"
+        working-directory: terraform
+
+      - name: Print deployment summary
+        run: |
+          CF_URL=$(terraform output -raw cloudfront_url)
+          API_URL=$(terraform output -raw api_gateway_url)
+          echo "## 🚀 Tax4Sure Infrastructure" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Resource | URL |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🌐 **Website (HTTPS)** | [$CF_URL]($CF_URL) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ⚡ **API Gateway** | $API_URL |" >> "$GITHUB_STEP_SUMMARY"
         working-directory: terraform
 
   # ── 1b. Read outputs from state when Terraform didn't run ────────────────
@@ -230,3 +243,16 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ needs.read-outputs.outputs.cloudfront_distribution_id }} \
             --paths "/*"
+
+      - name: Print deployment summary
+        run: |
+          API_URL="${{ needs.read-outputs.outputs.api_gateway_url }}"
+          CF_ID="${{ needs.read-outputs.outputs.cloudfront_distribution_id }}"
+          CF_URL="https://$(aws cloudfront get-distribution --id $CF_ID --query 'Distribution.DomainName' --output text)"
+          echo "## ✅ Tax4Sure Website Deployed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| | |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🌐 **Live URL** | [$CF_URL]($CF_URL) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ⚡ **API** | $API_URL |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🗂️ **CloudFront ID** | \`$CF_ID\` |" >> "$GITHUB_STEP_SUMMARY"
