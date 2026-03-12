@@ -1,3 +1,4 @@
+// Tax4Sure API — route handler
 import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import { handleLogin, handleRegister } from "./handlers/auth";
 import {
