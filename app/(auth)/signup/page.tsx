@@ -9,7 +9,9 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { apiCall } from "@/lib/api-client";
+import { useAuth } from "@/lib/auth-context";
 import { Eye, EyeOff, UserPlus, Loader2, Check, X } from "lucide-react";
+import Image from "next/image";
 import { BrandPanel } from "@/components/auth/BrandPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +83,7 @@ export default function SignupPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { signIn } = useAuth();
 
   const {
     register,
@@ -115,8 +118,26 @@ export default function SignupPage() {
       if (!res.ok) {
         toast.error(result.error || "Registration failed");
       } else {
-        toast.success("Account created! Please sign in.");
-        router.push("/login");
+        // Auto-login: sign in immediately after account creation
+        try {
+          const loginRes = await apiCall("/api/auth/login", {
+            method: "POST",
+            auth: false,
+            body: JSON.stringify({ usernameOrEmail: data.email, password: data.password }),
+          });
+          const loginResult = await loginRes.json();
+          if (loginRes.ok) {
+            signIn(loginResult.token, loginResult.user);
+            toast.success("Welcome to Tax4Sure! Your account is ready.");
+            router.push("/dashboard");
+          } else {
+            toast.success("Account created! Please sign in.");
+            router.push("/login");
+          }
+        } catch {
+          toast.success("Account created! Please sign in.");
+          router.push("/login");
+        }
       }
     } catch {
       toast.error("An unexpected error occurred. Please try again.");
@@ -135,9 +156,14 @@ export default function SignupPage() {
       <BrandPanel />
 
       {/* Right: Form */}
-      <div className="flex flex-col justify-center px-8 py-10 md:px-12 overflow-y-auto">
+      <div className="flex flex-col justify-center px-6 py-8 md:px-12 overflow-y-auto">
+        {/* Mobile logo */}
+        <div className="flex justify-center mb-6 lg:hidden">
+          <Image src="/logo.svg" alt="Tax4Sure" width={140} height={40} priority />
+        </div>
+
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-navy-700">Create your account</h1>
+          <h1 className="text-2xl font-bold text-[#0D1F4E]">Create your account</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Join Tax4Sure for secure document management
           </p>

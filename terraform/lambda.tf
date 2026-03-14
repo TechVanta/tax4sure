@@ -62,6 +62,10 @@ resource "aws_lambda_function" "api" {
       JWT_SECRET            = random_password.jwt_secret.result
       ADMIN_PASSWORD        = random_password.admin_password.result
       FRONTEND_URL          = "https://${aws_cloudfront_distribution.website.domain_name}"
+      SITE_URL              = "https://${aws_cloudfront_distribution.website.domain_name}"
+      GMAIL_USER            = var.gmail_user
+      GMAIL_APP_PASSWORD    = var.gmail_app_password
+      CONTACT_EMAIL         = var.contact_email
     }
   }
 

@@ -54,9 +54,10 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
             <Image
               src="/logo-white.svg"
               alt="Tax4Sure"
-              width={200}
-              height={56}
+              width={160}
+              height={44}
               priority
+              className="h-9 w-auto sm:h-11"
             />
           </Link>
         </div>

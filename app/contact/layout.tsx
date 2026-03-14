@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Tax4Sure",
+  title: "Contact Us | Tax4Sure — Free Tax & Business Consultation in Ontario",
   description:
-    "Get in touch with Tax4Sure. We offer professional Canadian tax filing and accounting services. Send us a message and we'll respond within one business day.",
+    "Contact Tax4Sure for a free consultation on personal tax (T1), corporate tax (T2), GST/HST, corporation incorporation, Ontario business registration, CRA audit support, and more. We respond within one business day.",
+  keywords: [
+    "contact tax accountant Ontario",
+    "free tax consultation Canada",
+    "tax filing help Ontario",
+    "corporation incorporation consultation",
+    "business registration Ontario",
+    "CRA audit help",
+    "tax4sure contact",
+  ],
   alternates: {
     canonical: "https://d8nnmu6vr11v0.cloudfront.net/contact",
   },

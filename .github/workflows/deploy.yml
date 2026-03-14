@@ -86,6 +86,10 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
         working-directory: terraform
+        env:
+          TF_VAR_gmail_user:         ${{ secrets.GMAIL_USER }}
+          TF_VAR_gmail_app_password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          TF_VAR_contact_email:      ${{ secrets.CONTACT_EMAIL }}
 
       - name: Export Terraform outputs
         id: tf-output

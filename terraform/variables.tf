@@ -33,3 +33,23 @@ variable "environment" {
   type        = string
   default     = "prod"
 }
+
+variable "gmail_user" {
+  description = "Gmail address used to send contact form emails (e.g. tax4sureca@gmail.com)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "gmail_app_password" {
+  description = "Gmail App Password (16-char, generated in Google Account > Security > App Passwords)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "contact_email" {
+  description = "Recipient email for contact form notifications"
+  type        = string
+  default     = "tax4sureca@gmail.com"
+}

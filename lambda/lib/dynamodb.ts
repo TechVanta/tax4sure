@@ -5,6 +5,7 @@ import {
   PutCommand,
   QueryCommand,
   ScanCommand,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 
 const client = new DynamoDBClient({ region: process.env.AWS_REGION || "us-east-1" });
@@ -66,4 +67,15 @@ export async function createUser(data: Omit<User, "id">): Promise<User> {
     })
   );
   return user;
+}
+
+export async function updateUserPassword(username: string, passwordHash: string): Promise<void> {
+  await docClient.send(
+    new UpdateCommand({
+      TableName: TABLE,
+      Key: { username },
+      UpdateExpression: "SET passwordHash = :hash",
+      ExpressionAttributeValues: { ":hash": passwordHash },
+    })
+  );
 }
