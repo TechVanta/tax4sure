@@ -39,7 +39,7 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0D1F4E] shadow-lg border-b border-white/10">
+    <header className="sticky top-0 z-50 w-full bg-[#091429] shadow-lg border-b border-white/10">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         {/* Left: hamburger + logo */}
         <div className="flex items-center gap-3">

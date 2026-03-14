@@ -11,7 +11,7 @@ const features = [
 
 export function BrandPanel() {
   return (
-    <div className="hidden lg:flex flex-col justify-between bg-[#0D1F4E] p-10 text-white relative overflow-hidden">
+    <div className="hidden lg:flex flex-col justify-between bg-[#091429] p-10 text-white relative overflow-hidden">
       {/* Decorative circles */}
       <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-white/5" />
       <div className="absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-white/5" />

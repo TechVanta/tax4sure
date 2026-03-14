@@ -15,7 +15,7 @@ import { ok, badRequest, unauthorized, serverError } from "../lib/response";
 const s3 = new S3Client({ region: process.env.AWS_REGION || "us-east-1" });
 const BUCKET = process.env.S3_BUCKET_NAME!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "ravibhalala217@gmail.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "tax4sureca@gmail.com";
 const JWT_SECRET = process.env.JWT_SECRET!;
 const GMAIL_USER = process.env.GMAIL_USER || "";
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || "";

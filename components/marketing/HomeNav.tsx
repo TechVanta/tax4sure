@@ -24,7 +24,7 @@ export function HomeNav() {
   return (
     <header
       className={`sticky top-0 z-50 border-b border-white/10 transition-all duration-300 ${
-        scrolled ? "bg-[#0D1F4E]/98 shadow-lg backdrop-blur-sm" : "bg-[#0D1F4E]/95 backdrop-blur"
+        scrolled ? "bg-[#091429]/98 shadow-lg backdrop-blur-sm" : "bg-[#091429]/95 backdrop-blur"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -85,7 +85,7 @@ export function HomeNav() {
           open ? "max-h-[28rem] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="border-t border-white/10 bg-[#0A1A42] px-4 py-3 space-y-0.5">
+        <div className="border-t border-white/10 bg-[#060e1f] px-4 py-3 space-y-0.5">
           {[
             { href: "/#services", label: "Services", isAnchor: true },
             { href: "/#why-us", label: "Why Us", isAnchor: true },

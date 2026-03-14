@@ -353,17 +353,18 @@ export default function HomePage() {
       <HomeNav />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#0D1F4E] text-white">
+      <section className="relative overflow-hidden bg-[#091429] text-white">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 -right-32 h-[520px] w-[520px] rounded-full bg-[#2B5BA8]/20 blur-3xl" />
-          <div className="absolute bottom-0 -left-20 h-[380px] w-[380px] rounded-full bg-[#C9A84C]/10 blur-3xl" />
+          <div className="absolute -top-32 -right-32 h-[600px] w-[600px] rounded-full bg-[#2B5BA8]/25 blur-3xl" />
+          <div className="absolute bottom-0 -left-20 h-[420px] w-[420px] rounded-full bg-[#C9A84C]/15 blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[300px] rounded-full bg-[#1B3A7A]/30 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 py-20 md:py-32 lg:py-40">
           <div className="max-w-3xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 px-4 py-1.5 text-sm font-semibold text-[#C9A84C]">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/15 px-4 py-1.5 text-sm font-semibold text-[#C9A84C]">
               <Star className="h-3.5 w-3.5 fill-[#C9A84C]" />
-              Trusted Canadian Tax &amp; Business Services Firm
+              Canadian Tax Professionals
             </div>
 
             <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
@@ -672,7 +673,7 @@ export default function HomePage() {
       </section>
 
       {/* ── NEWSLETTER / LEAD MAGNET ──────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#0D1F4E] py-14 sm:py-20">
+      <section className="relative overflow-hidden bg-[#091429] py-14 sm:py-20">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-20 left-1/2 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-[#C9A84C]/10 blur-3xl" />
         </div>
@@ -757,7 +758,7 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA BANNER ───────────────────────────────────────────────────── */}
-      <section id="contact" className="relative overflow-hidden bg-[#0D1F4E] py-16 text-white sm:py-20">
+      <section id="contact" className="relative overflow-hidden bg-[#091429] py-16 text-white sm:py-20">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-20 right-0 h-[360px] w-[360px] rounded-full bg-[#C9A84C]/10 blur-3xl" />
           <div className="absolute bottom-0 left-0 h-[260px] w-[260px] rounded-full bg-[#2B5BA8]/20 blur-3xl" />
@@ -804,7 +805,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer className="bg-[#0D1F4E] text-white">
+      <footer className="bg-[#091429] text-white">
         <div className="mx-auto max-w-7xl px-5 pt-12 pb-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4 mb-10">
             {/* Brand */}
@@ -814,8 +815,8 @@ export default function HomePage() {
                 <span className="text-[#C9A84C]">4</span>
                 <span className="text-[#7EB3E8]">Sure</span>
               </p>
-              <p className="mt-1 text-xs tracking-widest text-white/40 uppercase">
-                CPA · TAX · HST · GST · BOOKKEEPING
+              <p className="mt-1 text-xs tracking-widest text-[#C9A84C]/60 uppercase">
+                Canadian Tax Professionals
               </p>
               <p className="mt-4 text-sm text-white/55 leading-relaxed max-w-[220px]">
                 Your one-stop solution for personal tax, corporate tax, and business services across Canada.
