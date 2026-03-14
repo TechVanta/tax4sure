@@ -66,7 +66,13 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: "/favicon.svg",
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  other: {
+    "theme-color": "#0D1F4E",
+    "msapplication-TileColor": "#0D1F4E",
   },
 };
 
@@ -80,6 +86,8 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <meta name="theme-color" content="#0D1F4E" />
+        <meta name="msapplication-TileColor" content="#0D1F4E" />
       </head>
       <body className="min-h-screen bg-background antialiased">
         <Providers>{children}</Providers>

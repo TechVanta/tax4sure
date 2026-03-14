@@ -1,30 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="12" fill="#0D1F4E"/>
+
+  <!-- Dark navy rounded background -->
+  <rect width="64" height="64" rx="10" fill="#0D1F4E"/>
+
   <defs>
-    <linearGradient id="sh" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#3A6EC4"/>
-      <stop offset="100%" stop-color="#1B3A7A"/>
+    <!-- Gold gradient for outer shield — matches the 3D logo -->
+    <linearGradient id="goldOuter" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#E8C060"/>
+      <stop offset="50%"  stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#A07830"/>
     </linearGradient>
-    <linearGradient id="ar" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#5B8EC4"/>
-      <stop offset="60%" stop-color="#C9A84C"/>
-      <stop offset="100%" stop-color="#E8C060"/>
+    <!-- Blue gradient for inner shield -->
+    <linearGradient id="blueInner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#2B5BA8"/>
+      <stop offset="100%" stop-color="#0D1F4E"/>
     </linearGradient>
   </defs>
 
-  <!-- Shield outer -->
-  <path d="M8 17 L32 10 L56 17 L56 38 C56 52 32 58 32 58 C32 58 8 52 8 38 Z"
-        fill="url(#sh)"/>
-  <!-- Shield inner border -->
-  <path d="M12 19.5 L32 13.5 L52 19.5 L52 38 C52 50 32 55.5 32 55.5 C32 55.5 12 50 12 38 Z"
-        fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <!-- Outer gold shield -->
+  <path d="M32 5 L55 13 L55 36 Q55 52 32 60 Q9 52 9 36 L9 13 Z"
+        fill="url(#goldOuter)"/>
 
-  <!-- Chart line -->
-  <polyline points="14,45 22,36 28,40 36,28 44,23"
-            stroke="url(#ar)" stroke-width="3"
-            stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <!-- Arrow head + shaft -->
-  <line x1="44" y1="23" x2="51" y2="14"
-        stroke="#C9A84C" stroke-width="3" stroke-linecap="round"/>
-  <polygon points="51,14 43,17 46,24" fill="#C9A84C"/>
+  <!-- Inner blue shield (inset) -->
+  <path d="M32 11 L50 18 L50 36 Q50 49 32 56 Q14 49 14 36 L14 18 Z"
+        fill="url(#blueInner)"/>
+
+  <!-- "T4" monogram in gold — bold and readable at small sizes -->
+  <text x="23" y="42"
+        font-family="'Arial Black', 'Inter', sans-serif"
+        font-size="19" font-weight="900"
+        fill="#C9A84C" letter-spacing="-1">T4</text>
+
 </svg>
