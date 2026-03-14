@@ -16,7 +16,6 @@ import {
   Loader2,
   ShieldCheck,
   User,
-  ArrowLeft,
   CheckCircle2,
 } from "lucide-react";
 import { BrandPanel } from "@/components/auth/BrandPanel";
