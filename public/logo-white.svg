@@ -1,19 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 122" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 122" fill="none">
+
+  <!-- Icon: Gold circle badge -->
+  <circle cx="52" cy="58" r="46" fill="#C9A84C"/>
+
+  <!-- Shield inside circle (dark navy) -->
+  <path d="M52,22 L78,32 L78,58 Q78,80 52,92 Q26,80 26,58 L26,32 Z" fill="#0D1F4E"/>
+
+  <!-- Checkmark inside shield (white) -->
+  <path d="M36,58 L48,70 L70,45"
+        stroke="white" stroke-width="6.5"
+        stroke-linecap="round" stroke-linejoin="round"
+        fill="none"/>
 
   <!-- Wordmark: "Tax" white · "4" gold · "Sure" light-blue -->
   <text font-family="'Inter', 'Arial Black', sans-serif"
         font-size="82" font-weight="900" letter-spacing="-3">
-    <tspan x="4" y="84" fill="#FFFFFF">Tax</tspan><tspan fill="#C9A84C">4</tspan><tspan fill="#7EB3E8">Sure</tspan>
+    <tspan x="110" y="84" fill="#FFFFFF">Tax</tspan><tspan fill="#C9A84C">4</tspan><tspan fill="#7EB3E8">Sure</tspan>
   </text>
 
   <!-- Gold accent rule -->
-  <rect x="4" y="94" width="432" height="3.5" rx="1.5" fill="#C9A84C"/>
+  <rect x="110" y="94" width="430" height="3.5" rx="1.5" fill="#C9A84C"/>
 
   <!-- Tagline -->
-  <text x="6" y="115"
+  <text x="110" y="115"
         font-family="'Inter', Arial, sans-serif"
-        font-size="15" font-weight="500" letter-spacing="2.8"
+        font-size="14" font-weight="500" letter-spacing="2.5"
         fill="rgba(255,255,255,0.58)">CPA · TAX · HST · GST · BOOKKEEPING</text>
 
 </svg>
-
