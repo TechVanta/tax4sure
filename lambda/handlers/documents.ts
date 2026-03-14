@@ -14,7 +14,11 @@ const s3 = new S3Client({ region: process.env.AWS_REGION || "us-east-1" });
 const BUCKET = process.env.S3_BUCKET_NAME!;
 const URL_EXPIRY = 60 * 60 * 24 * 7; // 7 days
 
-const TAX_YEARS = [2022, 2023, 2024, 2025, 2026];
+function computeTaxYears(): number[] {
+  const current = new Date().getFullYear();
+  return [current, current - 1, current - 2, current - 3];
+}
+const TAX_YEARS = computeTaxYears();
 
 const ACCEPTED_MIME_TYPES = [
   "application/pdf",

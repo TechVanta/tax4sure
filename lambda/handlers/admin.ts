@@ -20,7 +20,11 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 const GMAIL_USER = process.env.GMAIL_USER || "";
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || "";
 const SITE_URL = process.env.SITE_URL || "https://d8nnmu6vr11v0.cloudfront.net";
-const TAX_YEARS = ["2022", "2023", "2024", "2025", "2026"];
+function computeTaxYears(): string[] {
+  const current = new Date().getFullYear();
+  return [current, current - 1, current - 2, current - 3].map(String);
+}
+const TAX_YEARS = computeTaxYears();
 
 function getAdminAuth(event: APIGatewayProxyEventV2) {
   const auth = event.headers?.authorization || event.headers?.Authorization || "";

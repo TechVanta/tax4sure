@@ -38,11 +38,16 @@ resource "aws_iam_role_policy" "lambda_app" {
           "dynamodb:PutItem",
           "dynamodb:Query",
           "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
           "dynamodb:Scan",
         ]
         Resource = [
           aws_dynamodb_table.users.arn,
           "${aws_dynamodb_table.users.arn}/index/*",
+          aws_dynamodb_table.cases.arn,
+          "${aws_dynamodb_table.cases.arn}/index/*",
+          aws_dynamodb_table.notifications.arn,
+          "${aws_dynamodb_table.notifications.arn}/index/*",
         ]
       },
       {

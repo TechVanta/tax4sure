@@ -57,7 +57,9 @@ resource "aws_lambda_function" "api" {
   environment {
     variables = {
       AWS_REGION_ENV        = var.aws_region
-      DYNAMODB_TABLE_NAME   = aws_dynamodb_table.users.name
+      DYNAMODB_TABLE_NAME        = aws_dynamodb_table.users.name
+      CASES_TABLE_NAME           = aws_dynamodb_table.cases.name
+      NOTIFICATIONS_TABLE_NAME   = aws_dynamodb_table.notifications.name
       S3_BUCKET_NAME        = aws_s3_bucket.documents.id
       JWT_SECRET            = random_password.jwt_secret.result
       ADMIN_PASSWORD        = random_password.admin_password.result
@@ -90,7 +92,7 @@ resource "aws_apigatewayv2_api" "api" {
 
   cors_configuration {
     allow_origins = ["https://${aws_cloudfront_distribution.website.domain_name}"]
-    allow_methods = ["GET", "POST", "DELETE", "OPTIONS"]
+    allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_headers = ["Content-Type", "Authorization"]
     max_age       = 3600
   }

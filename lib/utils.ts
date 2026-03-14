@@ -43,7 +43,11 @@ export function getFileTypeLabel(mimeType: string): string {
   return "File";
 }
 
-export const TAX_YEARS = [2022, 2023, 2024, 2025, 2026];
+function computeTaxYears(): number[] {
+  const current = new Date().getFullYear();
+  return [current, current - 1, current - 2, current - 3];
+}
+export const TAX_YEARS = computeTaxYears();
 
 export const ACCEPTED_MIME_TYPES = [
   "application/pdf",

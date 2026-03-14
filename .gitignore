@@ -48,3 +48,6 @@ terraform/placeholder.zip
 # lambda build artifacts
 lambda/dist/
 lambda/lambda.zip
+
+# Local dev data store
+data/

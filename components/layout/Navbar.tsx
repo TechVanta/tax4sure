@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NotificationBell } from "@/components/NotificationBell";
 
 interface NavbarProps {
   onMenuToggle?: () => void;
@@ -62,8 +63,10 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
           </Link>
         </div>
 
-        {/* Right: user menu */}
-        {user && (
+        {/* Right: bell + user menu */}
+        <div className="flex items-center gap-1">
+          {user && <NotificationBell />}
+          {user && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -112,7 +115,8 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )}
+          )}
+        </div>
       </div>
     </header>
   );
