@@ -101,7 +101,9 @@
   }
 }
 
-/* Prevent horizontal overflow on mobile */
+/* Prevent horizontal overflow on mobile.
+   Use clip (not hidden) so position:sticky still works — overflow:hidden
+   on html/body creates a new scroll container that breaks sticky headers. */
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
