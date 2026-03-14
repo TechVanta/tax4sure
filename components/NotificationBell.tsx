@@ -59,9 +59,11 @@ export function NotificationBell({ isAdmin = false }: Props) {
 
   const markAllRead = async () => {
     const body = JSON.stringify({ notificationIds: [] });
-    isAdmin
-      ? await adminApiCall("/api/notifications/read", { method: "PUT", body })
-      : await apiCall("/api/notifications/read", { method: "PUT", body });
+    if (isAdmin) {
+      await adminApiCall("/api/notifications/read", { method: "PUT", body });
+    } else {
+      await apiCall("/api/notifications/read", { method: "PUT", body });
+    }
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 

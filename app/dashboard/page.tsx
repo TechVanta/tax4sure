@@ -118,7 +118,7 @@ export default function DashboardPage() {
           Welcome back, {firstName} 👋
         </h1>
         <p className="mt-1 text-muted-foreground">
-          Here's a summary of your tax files and service status.
+          Here&apos;s a summary of your tax files and service status.
         </p>
       </motion.div>
 

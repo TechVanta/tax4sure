@@ -215,24 +215,6 @@ function CaseCard({ theCase, onUpdate, onDelete }: CaseCardProps) {
     paymentStatus !== theCase.paymentStatus ||
     adminNotes !== theCase.adminNotes;
 
-  const handleSave = async () => {
-    setSaving(true);
-    try {
-      const res = await adminApiCall(`/api/cases/${theCase.caseId}`, {
-        method: "PUT",
-        body: JSON.stringify({ status, paymentStatus, adminNotes }),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      onUpdate(data.case);
-      toast.success("Case updated");
-    } catch {
-      toast.error("Failed to save");
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleRequestDocuments = async () => {
     setRequesting(true);
     try {
