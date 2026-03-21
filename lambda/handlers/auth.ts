@@ -16,7 +16,7 @@ import { ok, created, badRequest, unauthorized, serverError } from "../lib/respo
 const JWT_SECRET = process.env.JWT_SECRET!;
 const GMAIL_USER = process.env.GMAIL_USER || "";
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || "";
-const SITE_URL = process.env.SITE_URL || "https://d8nnmu6vr11v0.cloudfront.net";
+const SITE_URL = process.env.SITE_URL || "https://www.tax4sure.ca";
 
 const loginSchema = z.object({
   usernameOrEmail: z.string().min(1, "Username or email required"),

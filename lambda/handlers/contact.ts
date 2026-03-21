@@ -5,7 +5,7 @@ import { ok, badRequest, serverError } from "../lib/response";
 const CONTACT_RECIPIENT = process.env.CONTACT_EMAIL || "tax4sureca@gmail.com";
 const GMAIL_USER = process.env.GMAIL_USER || "";
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || "";
-const SITE_URL = process.env.SITE_URL || "https://d8nnmu6vr11v0.cloudfront.net";
+const SITE_URL = process.env.SITE_URL || "https://www.tax4sure.ca";
 
 const SUBJECT_LABELS: Record<string, string> = {
   "consultation": "Free Consultation Request",

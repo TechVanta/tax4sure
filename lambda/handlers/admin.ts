@@ -19,7 +19,7 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "tax4sureca@gmail.com";
 const JWT_SECRET = process.env.JWT_SECRET!;
 const GMAIL_USER = process.env.GMAIL_USER || "";
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || "";
-const SITE_URL = process.env.SITE_URL || "https://d8nnmu6vr11v0.cloudfront.net";
+const SITE_URL = process.env.SITE_URL || "https://www.tax4sure.ca";
 function computeTaxYears(): string[] {
   const current = new Date().getFullYear();
   return [current, current - 1, current - 2, current - 3].map(String);

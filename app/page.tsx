@@ -60,12 +60,12 @@ export const metadata: Metadata = {
     "tax advisor Ontario",
     "tax4sure",
   ],
-  alternates: { canonical: "https://d8nnmu6vr11v0.cloudfront.net/" },
+  alternates: { canonical: "https://www.tax4sure.ca/" },
   openGraph: {
     title: "Tax4Sure | Canadian Tax Filing, Business Registration & CPA Services",
     description:
       "Professional Canadian tax & accounting services — T1, T2, GST/HST, corporation incorporation, Ontario business registration, CRA audit support, bookkeeping & more.",
-    url: "https://d8nnmu6vr11v0.cloudfront.net/",
+    url: "https://www.tax4sure.ca/",
     type: "website",
   },
 };
@@ -324,7 +324,7 @@ export default function HomePage() {
             name: "Tax4Sure",
             description:
               "Professional Canadian tax filing and accounting services including T1 personal tax, T2 corporate tax, GST/HST filing, corporation incorporation, Ontario business registration, CRA audit support, bookkeeping, payroll, and tax advisory.",
-            url: "https://d8nnmu6vr11v0.cloudfront.net",
+            url: "https://www.tax4sure.ca",
             email: "tax4sureca@gmail.com",
             areaServed: [
               { "@type": "Country", name: "Canada" },

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard/", "/admin/"],
     },
-    sitemap: "https://d8nnmu6vr11v0.cloudfront.net/sitemap.xml",
+    sitemap: "https://www.tax4sure.ca/sitemap.xml",
   };
 }

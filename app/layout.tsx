@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
-const SITE_URL = "https://d8nnmu6vr11v0.cloudfront.net";
+const SITE_URL = "https://www.tax4sure.ca";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

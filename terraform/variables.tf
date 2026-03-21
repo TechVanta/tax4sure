@@ -63,6 +63,6 @@ variable "domain_name" {
 variable "domain_ssl_validated" {
   description = "Set to true AFTER the ACM certificate DNS validation is complete in GoDaddy. Phase 1: false (creates cert, outputs validation records). Phase 2: true (attaches cert + custom domain to CloudFront)."
   type        = bool
-  default     = false
+  default     = true
 }
 

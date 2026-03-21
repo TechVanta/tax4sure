@@ -63,8 +63,8 @@ resource "aws_lambda_function" "api" {
       S3_BUCKET_NAME        = aws_s3_bucket.documents.id
       JWT_SECRET            = random_password.jwt_secret.result
       ADMIN_PASSWORD        = random_password.admin_password.result
-      FRONTEND_URL          = "https://${aws_cloudfront_distribution.website.domain_name}"
-      SITE_URL              = "https://${aws_cloudfront_distribution.website.domain_name}"
+      FRONTEND_URL          = var.domain_name != "" ? "https://www.${var.domain_name}" : "https://${aws_cloudfront_distribution.website.domain_name}"
+      SITE_URL              = var.domain_name != "" ? "https://www.${var.domain_name}" : "https://${aws_cloudfront_distribution.website.domain_name}"
       GMAIL_USER            = var.gmail_user
       GMAIL_APP_PASSWORD    = var.gmail_app_password
       CONTACT_EMAIL         = var.contact_email

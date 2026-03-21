@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "tax4sure contact",
   ],
   alternates: {
-    canonical: "https://d8nnmu6vr11v0.cloudfront.net/contact",
+    canonical: "https://www.tax4sure.ca/contact",
   },
 };
 
