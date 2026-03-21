@@ -61,7 +61,7 @@ resource "aws_cloudfront_function" "url_rewrite" {
   comment = "Enforce custom domain + rewrite paths to index.html"
   publish = true
 
-  code = var.domain_name != "" ? local.cf_function_with_domain : local.cf_function_without_domain
+  code = var.domain_ssl_validated ? local.cf_function_with_domain : local.cf_function_without_domain
 }
 
 # ─── CloudFront Origin Access Control ────────────────────────────────────────
@@ -158,15 +158,16 @@ resource "aws_cloudfront_distribution" "website" {
     }
   }
 
-  # Custom domain aliases (only when domain_name is set)
-  aliases = var.domain_name != "" ? [var.domain_name, "www.${var.domain_name}"] : []
+  # Custom domain aliases — only after SSL cert is validated in GoDaddy
+  aliases = var.domain_ssl_validated ? [var.domain_name, "www.${var.domain_name}"] : []
 
-  # Use ACM certificate when custom domain is set, otherwise CloudFront default
+  # Phase 1 (domain_ssl_validated=false): default CloudFront cert
+  # Phase 2 (domain_ssl_validated=true):  ACM cert + custom domain
   viewer_certificate {
-    cloudfront_default_certificate = var.domain_name == "" ? true : false
-    acm_certificate_arn            = var.domain_name != "" ? aws_acm_certificate.website[0].arn : null
-    ssl_support_method             = var.domain_name != "" ? "sni-only" : null
-    minimum_protocol_version       = var.domain_name != "" ? "TLSv1.2_2021" : null
+    cloudfront_default_certificate = var.domain_ssl_validated ? false : true
+    acm_certificate_arn            = var.domain_ssl_validated ? aws_acm_certificate.website[0].arn : null
+    ssl_support_method             = var.domain_ssl_validated ? "sni-only" : null
+    minimum_protocol_version       = var.domain_ssl_validated ? "TLSv1.2_2021" : null
   }
 
   tags = {
