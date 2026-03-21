@@ -65,8 +65,10 @@ resource "aws_s3_bucket_cors_configuration" "documents" {
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["GET", "PUT"]
-    # Restrict to your website domain in production:
-    allowed_origins = ["*"]
+    allowed_origins = var.domain_name != "" ? [
+      "https://${var.domain_name}",
+      "https://www.${var.domain_name}"
+    ] : ["*"]
     max_age_seconds = 3600
   }
 }

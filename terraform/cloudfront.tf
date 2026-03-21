@@ -1,16 +1,42 @@
-# ─── CloudFront Function: URL rewriting for Next.js static export ────────────
+# ─── CloudFront Function: domain enforcement + URL rewriting ─────────────────
 #
-# S3 (REST API / OAC) returns 403 for directory requests like /dashboard/ because
-# it cannot automatically serve dashboard/index.html. This function rewrites
-# every directory path to the correct index.html before it reaches S3.
+# 1. Redirects *.cloudfront.net requests to the custom domain (if configured)
+# 2. Rewrites directory paths to index.html for Next.js static export
 
-resource "aws_cloudfront_function" "url_rewrite" {
-  name    = "tax4sure-url-rewrite"
-  runtime = "cloudfront-js-2.0"
-  comment = "Rewrite directory paths to index.html for Next.js static export"
-  publish = true
+locals {
+  cf_function_with_domain = <<-EOT
+    function handler(event) {
+      var request = event.request;
+      var host = request.headers.host.value;
+      var uri = request.uri;
+      var customDomain = '${var.domain_name}';
+      var wwwDomain = 'www.${var.domain_name}';
 
-  code = <<-EOT
+      // Redirect non-custom-domain requests (e.g. *.cloudfront.net) to custom domain
+      if (host !== customDomain && host !== wwwDomain) {
+        return {
+          statusCode: 301,
+          statusDescription: 'Moved Permanently',
+          headers: {
+            location: { value: 'https://' + wwwDomain + uri }
+          }
+        };
+      }
+
+      // Directory request (ends with /) → append index.html
+      if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+      }
+      // No file extension in last path segment → treat as a page route
+      else if (!uri.split('/').pop().includes('.')) {
+        request.uri += '/index.html';
+      }
+
+      return request;
+    }
+  EOT
+
+  cf_function_without_domain = <<-EOT
     function handler(event) {
       var request = event.request;
       var uri = request.uri;
@@ -27,6 +53,15 @@ resource "aws_cloudfront_function" "url_rewrite" {
       return request;
     }
   EOT
+}
+
+resource "aws_cloudfront_function" "url_rewrite" {
+  name    = "tax4sure-url-rewrite"
+  runtime = "cloudfront-js-2.0"
+  comment = "Enforce custom domain + rewrite paths to index.html"
+  publish = true
+
+  code = var.domain_name != "" ? local.cf_function_with_domain : local.cf_function_without_domain
 }
 
 # ─── CloudFront Origin Access Control ────────────────────────────────────────
@@ -95,6 +130,11 @@ resource "aws_cloudfront_distribution" "website" {
     min_ttl     = 0
     default_ttl = 0
     max_ttl     = 0
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_rewrite.arn
+    }
   }
 
   # SPA routing: unknown paths → return index.html with 200
@@ -118,9 +158,15 @@ resource "aws_cloudfront_distribution" "website" {
     }
   }
 
-  # Use the free CloudFront default certificate (*.cloudfront.net)
+  # Custom domain aliases (only when domain_name is set)
+  aliases = var.domain_name != "" ? [var.domain_name, "www.${var.domain_name}"] : []
+
+  # Use ACM certificate when custom domain is set, otherwise CloudFront default
   viewer_certificate {
-    cloudfront_default_certificate = true
+    cloudfront_default_certificate = var.domain_name == "" ? true : false
+    acm_certificate_arn            = var.domain_name != "" ? aws_acm_certificate.website[0].arn : null
+    ssl_support_method             = var.domain_name != "" ? "sni-only" : null
+    minimum_protocol_version       = var.domain_name != "" ? "TLSv1.2_2021" : null
   }
 
   tags = {

@@ -28,3 +28,32 @@ output "admin_password" {
   value       = random_password.admin_password.result
   sensitive   = true
 }
+
+# ─── Custom Domain Outputs ────────────────────────────────────────────────────
+
+output "acm_validation_records" {
+  description = "Add these CNAME records in GoDaddy to validate the SSL certificate"
+  value = var.domain_name != "" ? {
+    for dvo in aws_acm_certificate.website[0].domain_validation_options : dvo.domain_name => {
+      type  = "CNAME"
+      name  = dvo.resource_record_name
+      value = dvo.resource_record_value
+    }
+  } : {}
+}
+
+output "godaddy_dns_records" {
+  description = "After SSL is validated, add these DNS records in GoDaddy to point your domain to CloudFront"
+  value = var.domain_name != "" ? {
+    root_domain = {
+      type  = "CNAME"
+      name  = "@"
+      value = aws_cloudfront_distribution.website.domain_name
+    }
+    www = {
+      type  = "CNAME"
+      name  = "www"
+      value = aws_cloudfront_distribution.website.domain_name
+    }
+  } : {}
+}

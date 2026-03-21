@@ -53,3 +53,10 @@ variable "contact_email" {
   type        = string
   default     = "tax4sureca@gmail.com"
 }
+
+variable "domain_name" {
+  description = "Custom domain name for the website (e.g. tax4sure.com). Leave empty to skip custom domain setup."
+  type        = string
+  default     = "tax4sure.ca"
+}
+
