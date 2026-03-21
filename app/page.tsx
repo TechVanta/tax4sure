@@ -29,10 +29,8 @@ import {
   Globe,
   Heart,
   FolderOpen,
-  Gift,
 } from "lucide-react";
 import { HomeNav } from "@/components/marketing/HomeNav";
-import { NewsletterBanner } from "@/components/marketing/NewsletterBanner";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
