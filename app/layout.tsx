@@ -95,8 +95,7 @@ export const metadata: Metadata = {
     "revisit-after": "7 days",
   },
   verification: {
-    // Add your Google Search Console & Bing verification codes here:
-    // google: "your-google-verification-code",
+    google: "JE-pD-BPxZ5RY-JnXL7HmBVpA6W60gCtO58R909crIg",
     // other: { "msvalidate.01": "your-bing-verification-code" },
   },
   category: "finance",

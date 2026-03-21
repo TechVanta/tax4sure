@@ -23,8 +23,8 @@ export function HomeNav() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-white/10 transition-all duration-300 ${
-        scrolled ? "bg-[#091429]/98 shadow-lg backdrop-blur-sm" : "bg-[#091429]/95 backdrop-blur"
+      className={`sticky top-0 z-50 bg-[#091429] border-b border-white/10 transition-shadow duration-300 ${
+        scrolled ? "shadow-lg" : ""
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">

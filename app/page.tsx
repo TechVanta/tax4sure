@@ -888,29 +888,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── NEWSLETTER / LEAD MAGNET ──────────────────────────────────────── */}
+      {/* TODO: Re-enable Free Resource / Newsletter section when mechanism is ready
       <section className="relative overflow-hidden bg-[#091429] py-14 sm:py-20">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-20 left-1/2 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-[#C9A84C]/10 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-3xl px-5 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#C9A84C]/15 px-4 py-1.5 text-sm font-semibold text-[#C9A84C]">
-            <Gift className="h-3.5 w-3.5" />
-            Free Resource
-          </div>
-          <h2 className="text-2xl font-black text-white sm:text-3xl md:text-4xl">
-            Get Your Free 2024 Canadian<br />
-            <span className="text-[#C9A84C]">Tax Deductions Checklist</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-sm text-white/65 sm:text-base">
-            Over 40 often-missed deductions for individuals, self-employed, and small
-            business owners — straight to your inbox, no obligation.
-          </p>
-          <div className="mt-8">
-            <NewsletterBanner />
-          </div>
-        </div>
+        ...
       </section>
+      */}
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="bg-gray-50 py-16 sm:py-24">
