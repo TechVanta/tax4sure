@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#091429"/>
+      <stop offset="100%" stop-color="#0D1F4E"/>
+    </linearGradient>
+    <linearGradient id="goldOuter" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E8C060"/>
+      <stop offset="50%" stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#A07830"/>
+    </linearGradient>
+    <linearGradient id="blueInner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2B5BA8"/>
+      <stop offset="100%" stop-color="#0D1F4E"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.2" cy="0.3" r="0.5">
+      <stop offset="0%" stop-color="#2B5BA8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#091429" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.8" cy="0.7" r="0.4">
+      <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#091429" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Gold accent line at top -->
+  <rect x="0" y="0" width="1200" height="4" fill="#C9A84C"/>
+
+  <!-- Shield logo (scaled up) -->
+  <g transform="translate(100, 165) scale(4.5)">
+    <path d="M32 5 L55 13 L55 36 Q55 52 32 60 Q9 52 9 36 L9 13 Z" fill="url(#goldOuter)"/>
+    <path d="M32 11 L50 18 L50 36 Q50 49 32 56 Q14 49 14 36 L14 18 Z" fill="url(#blueInner)"/>
+    <text x="23" y="42" font-family="Arial Black, Arial, sans-serif" font-size="19" font-weight="900" fill="#C9A84C" letter-spacing="-1">T4</text>
+  </g>
+
+  <!-- Tax4Sure text -->
+  <text x="430" y="270" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#FFFFFF" letter-spacing="-1">Tax4Sure</text>
+
+  <!-- Tagline -->
+  <text x="430" y="330" font-family="Arial, sans-serif" font-size="30" fill="#C9A84C" font-weight="600">Canadian Tax Filing &amp; Accounting Services</text>
+
+  <!-- Services list -->
+  <text x="430" y="400" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.6)">T1 Personal Tax  |  T2 Corporate Tax  |  GST/HST Filing</text>
+  <text x="430" y="435" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.6)">Incorporation  |  Bookkeeping  |  CRA Audit Support</text>
+
+  <!-- URL -->
+  <text x="430" y="520" font-family="Arial, sans-serif" font-size="26" fill="#C9A84C" font-weight="700">www.tax4sure.ca</text>
+
+  <!-- Free consultation badge -->
+  <rect x="430" y="545" width="280" height="36" rx="18" fill="rgba(201,168,76,0.15)"/>
+  <text x="445" y="569" font-family="Arial, sans-serif" font-size="16" fill="#C9A84C" font-weight="600">Free Consultation — No Obligation</text>
+
+  <!-- Gold accent line at bottom -->
+  <rect x="0" y="626" width="1200" height="4" fill="#C9A84C"/>
+</svg>

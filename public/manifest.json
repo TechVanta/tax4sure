@@ -1,0 +1,19 @@
+{
+  "name": "Tax4Sure — Canadian Tax Filing & Accounting Services",
+  "short_name": "Tax4Sure",
+  "description": "Professional Canadian tax filing, bookkeeping, and accounting services. T1, T2, GST/HST, incorporation, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0D1F4E",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "lang": "en-CA"
+}

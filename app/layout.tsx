@@ -28,6 +28,12 @@ export const metadata: Metadata = {
     "tax preparation Canada",
     "income tax filing Canada",
     "online tax filing Canada",
+    "tax accountant Ontario",
+    "CPA Ontario",
+    "tax filing near me",
+    "file taxes online Canada",
+    "best tax accountant Ontario",
+    "affordable tax services Canada",
     "Tax4Sure",
   ],
   authors: [{ name: "Tax4Sure", url: SITE_URL }],
@@ -36,7 +42,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
   openGraph: {
     type: "website",
@@ -52,6 +64,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "Tax4Sure – Canadian Tax Filing & Accounting Services",
+        type: "image/png",
       },
     ],
   },
@@ -66,14 +79,27 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
     shortcut: "/favicon.svg",
     apple: "/favicon.svg",
   },
   other: {
     "theme-color": "#0D1F4E",
     "msapplication-TileColor": "#0D1F4E",
+    "geo.region": "CA-ON",
+    "geo.placename": "Ontario, Canada",
+    "rating": "general",
+    "revisit-after": "7 days",
   },
+  verification: {
+    // Add your Google Search Console & Bing verification codes here:
+    // google: "your-google-verification-code",
+    // other: { "msvalidate.01": "your-bing-verification-code" },
+  },
+  category: "finance",
 };
 
 export default function RootLayout({
@@ -86,6 +112,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0D1F4E" />
         <meta name="msapplication-TileColor" content="#0D1F4E" />
       </head>

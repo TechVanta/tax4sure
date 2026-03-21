@@ -38,7 +38,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Tax4Sure | Canadian Tax Filing, Business Registration & CPA Services in Ontario",
   description:
-    "Tax4Sure — professional Canadian tax & accounting services in Ontario. T1 personal returns, T2 corporate tax, GST/HST filing, corporation incorporation, Ontario business registration, CRA audit support, bookkeeping, payroll, and year-round advisory.",
+    "Tax4Sure — Ontario's trusted tax & accounting firm. T1 personal returns, T2 corporate tax, GST/HST filing, corporation incorporation, business registration, CRA audit support, bookkeeping & payroll. Free consultation. Secure client portal.",
   keywords: [
     "Canadian tax filing",
     "T1 personal tax return",
@@ -58,15 +58,30 @@ export const metadata: Metadata = {
     "estate tax T3 Canada",
     "disability tax credit Canada",
     "tax advisor Ontario",
+    "tax filing near me Ontario",
+    "best tax accountant Canada",
+    "affordable tax filing Ontario",
+    "online tax filing Canada 2026",
+    "small business tax accountant Ontario",
+    "RRSP tax deduction Canada",
     "tax4sure",
+    "tax4sure.ca",
   ],
   alternates: { canonical: "https://www.tax4sure.ca/" },
   openGraph: {
     title: "Tax4Sure | Canadian Tax Filing, Business Registration & CPA Services",
     description:
-      "Professional Canadian tax & accounting services — T1, T2, GST/HST, corporation incorporation, Ontario business registration, CRA audit support, bookkeeping & more.",
+      "Ontario's trusted tax & accounting firm — T1, T2, GST/HST, corporation incorporation, business registration, CRA audit support, bookkeeping & more. Free consultation.",
     url: "https://www.tax4sure.ca/",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tax4Sure – Canadian Tax Filing & Accounting Services in Ontario",
+      },
+    ],
   },
 };
 
@@ -314,21 +329,32 @@ const testimonials = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white font-sans">
-      {/* JSON-LD Structured Data */}
+      {/* JSON-LD: AccountingService + Organization */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "AccountingService",
+            "@id": "https://www.tax4sure.ca/#business",
             name: "Tax4Sure",
+            alternateName: "Tax4Sure Canada",
             description:
               "Professional Canadian tax filing and accounting services including T1 personal tax, T2 corporate tax, GST/HST filing, corporation incorporation, Ontario business registration, CRA audit support, bookkeeping, payroll, and tax advisory.",
             url: "https://www.tax4sure.ca",
+            logo: "https://www.tax4sure.ca/logo.svg",
+            image: "https://www.tax4sure.ca/og-image.png",
             email: "tax4sureca@gmail.com",
+            priceRange: "$$",
+            currenciesAccepted: "CAD",
+            paymentAccepted: "E-Transfer, Credit Card",
             areaServed: [
               { "@type": "Country", name: "Canada" },
-              { "@type": "AdministrativeArea", name: "Ontario" },
+              {
+                "@type": "AdministrativeArea",
+                name: "Ontario",
+                containedInPlace: { "@type": "Country", name: "Canada" },
+              },
             ],
             serviceType: [
               "Personal Tax Return (T1)",
@@ -346,6 +372,196 @@ export default function HomePage() {
               "Non-Resident Tax Filing",
               "Disability Tax Credit Application",
             ],
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Tax & Accounting Services",
+              itemListElement: [
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Personal Tax Return (T1)",
+                    description: "Complete T1 personal income tax preparation and e-filing for Canadian individuals.",
+                  },
+                },
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Corporate Tax Return (T2)",
+                    description: "T2 corporate income tax filing for Canadian corporations, including financial statements.",
+                  },
+                },
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Corporation Incorporation",
+                    description: "Federal (CBCA) and Ontario (OBCA) corporation incorporation services with NUANS name search.",
+                  },
+                },
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Free Tax Consultation",
+                    description: "Complimentary no-obligation tax consultation for individuals and businesses.",
+                    price: "0",
+                    priceCurrency: "CAD",
+                  },
+                },
+              ],
+            },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "5.0",
+              reviewCount: "3",
+              bestRating: "5",
+              worstRating: "1",
+            },
+            review: [
+              {
+                "@type": "Review",
+                author: { "@type": "Person", name: "Sarah M." },
+                reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                reviewBody: "Tax4Sure made filing my T1 incredibly easy. They found deductions I didn't even know existed and got me a much bigger refund than I expected. Highly recommend!",
+              },
+              {
+                "@type": "Review",
+                author: { "@type": "Person", name: "Raj P." },
+                reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                reviewBody: "As a self-employed consultant, taxes were always stressful. Tax4Sure handles everything — GST, T2125, quarterly remittances. I can focus on my business knowing taxes are covered.",
+              },
+              {
+                "@type": "Review",
+                author: { "@type": "Person", name: "Linda K." },
+                reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                reviewBody: "The secure portal is so convenient. I uploaded all my documents from my phone and everything was handled quickly. Professional, fast, and great value for the price.",
+              },
+            ],
+            sameAs: [],
+          }),
+        }}
+      />
+
+      {/* JSON-LD: FAQPage (enables Google FAQ rich snippets) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "What is the deadline for filing taxes in Canada?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "For most individuals, the personal tax (T1) filing deadline is April 30. Self-employed individuals have until June 15 to file, though any taxes owed are still due April 30. Corporate tax (T2) returns are due 6 months after the end of the corporation's fiscal year.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What is the difference between a T1 and T2 tax return?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "A T1 is the personal income tax return filed by individuals — employees, retirees, and self-employed people. A T2 is the corporate income tax return filed annually by all resident corporations in Canada.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do I need to register for GST/HST?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "You must register if your business revenues exceed $30,000 in a single calendar quarter or over four consecutive quarters. Voluntary registration is also available. Once registered, you collect and remit GST/HST to the CRA periodically.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What documents do I need for my personal tax return?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Commonly needed: T4 slips (employment income), T3/T5 slips (investment income), RRSP contribution receipts, medical expense receipts, charitable donation receipts, tuition slips (T2202), and business income/expense records if self-employed.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What is the difference between federal and Ontario provincial incorporation?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Federal incorporation under the Canada Business Corporations Act (CBCA) lets your corporation operate across all provinces under one name, but requires extra-provincial registration in each province where you do business. Ontario incorporation under the Business Corporations Act (OBCA) is simpler and lower cost if you only operate in Ontario. Tax4Sure helps you choose the right structure and handles all the paperwork.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How do I register a business name in Ontario?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Sole proprietors and partnerships operating under a name other than their own legal name must register a Master Business Licence with ServiceOntario. Registration is valid for 5 years. If you are incorporating, you'll also need a NUANS name search. Tax4Sure handles Ontario business registrations quickly and accurately.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Can Tax4Sure help me if I receive a letter from CRA?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Absolutely. CRA letters range from simple information requests to full audits. We review the notice, gather required documentation, and respond to CRA on your behalf. Our goal is to resolve CRA matters quickly and protect your interests.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How does the secure client portal work?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Create a free account, log in, and upload your documents directly to your private vault. Documents are organized by tax year and encrypted — only you and your Tax4Sure professional can access them.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Can I claim home office expenses as an employee?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes, if you were required to work from home and your employer certified this with a T2200. You can deduct a portion of rent, utilities, internet, and other expenses proportional to your workspace area.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      {/* JSON-LD: BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.tax4sure.ca",
+              },
+            ],
+          }),
+        }}
+      />
+
+      {/* JSON-LD: WebSite (enables sitelinks search box in Google) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Tax4Sure",
+            url: "https://www.tax4sure.ca",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: "https://www.tax4sure.ca/?q={search_term_string}",
+              "query-input": "required name=search_term_string",
+            },
           }),
         }}
       />
