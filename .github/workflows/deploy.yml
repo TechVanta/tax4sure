@@ -84,7 +84,13 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false
+        run: |
+          # Only pass Gmail vars via env if GitHub Secrets are set.
+          # If they're empty, unset so terraform.tfvars takes precedence.
+          [ -z "$TF_VAR_gmail_user" ]         && unset TF_VAR_gmail_user         || true
+          [ -z "$TF_VAR_gmail_app_password" ] && unset TF_VAR_gmail_app_password || true
+          [ -z "$TF_VAR_contact_email" ]      && unset TF_VAR_contact_email      || true
+          terraform apply -auto-approve -input=false
         working-directory: terraform
         env:
           TF_VAR_gmail_user:         ${{ secrets.GMAIL_USER }}

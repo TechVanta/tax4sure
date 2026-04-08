@@ -91,7 +91,12 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["https://${aws_cloudfront_distribution.website.domain_name}"]
+    # Allow both the custom domain (www.tax4sure.ca) and the raw CloudFront URL
+    allow_origins = var.domain_name != "" ? [
+      "https://www.${var.domain_name}",
+      "https://${var.domain_name}",
+      "https://${aws_cloudfront_distribution.website.domain_name}",
+    ] : ["https://${aws_cloudfront_distribution.website.domain_name}"]
     allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_headers = ["Content-Type", "Authorization"]
     max_age       = 3600
