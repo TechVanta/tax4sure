@@ -564,6 +564,62 @@ export default function HomePage() {
         }}
       />
 
+      {/* JSON-LD: Tax Season Events (rich results for seasonal deadlines) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Event",
+              name: "Canadian Personal Tax Filing Deadline (T1)",
+              description:
+                "Deadline for filing personal income tax returns (T1) in Canada. Tax4Sure offers professional T1 preparation and e-filing.",
+              startDate: "2026-04-30",
+              endDate: "2026-04-30",
+              eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+              eventStatus: "https://schema.org/EventScheduled",
+              location: {
+                "@type": "VirtualLocation",
+                url: "https://www.tax4sure.ca/contact",
+              },
+              organizer: {
+                "@type": "Organization",
+                name: "Canada Revenue Agency (CRA)",
+                url: "https://www.canada.ca/en/revenue-agency.html",
+              },
+              offers: {
+                "@type": "Offer",
+                name: "Professional T1 Tax Filing by Tax4Sure",
+                url: "https://www.tax4sure.ca/contact",
+                availability: "https://schema.org/InStock",
+                priceCurrency: "CAD",
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Event",
+              name: "Self-Employed Tax Filing Deadline Canada",
+              description:
+                "Extended filing deadline for self-employed individuals in Canada (taxes owed still due April 30).",
+              startDate: "2026-06-15",
+              endDate: "2026-06-15",
+              eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+              eventStatus: "https://schema.org/EventScheduled",
+              location: {
+                "@type": "VirtualLocation",
+                url: "https://www.tax4sure.ca/contact",
+              },
+              organizer: {
+                "@type": "Organization",
+                name: "Canada Revenue Agency (CRA)",
+                url: "https://www.canada.ca/en/revenue-agency.html",
+              },
+            },
+          ]),
+        }}
+      />
+
       <HomeNav />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -1030,12 +1086,12 @@ export default function HomePage() {
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Tax Services</h3>
               <ul className="space-y-2.5 text-sm text-white/65">
-                <li><a href="/#services" className="hover:text-white transition-colors">Personal Tax (T1)</a></li>
-                <li><a href="/#services" className="hover:text-white transition-colors">Self-Employed</a></li>
-                <li><a href="/#services" className="hover:text-white transition-colors">Corporate Tax (T2)</a></li>
-                <li><a href="/#services" className="hover:text-white transition-colors">GST / HST Returns</a></li>
-                <li><a href="/#services" className="hover:text-white transition-colors">Bookkeeping</a></li>
-                <li><a href="/#services" className="hover:text-white transition-colors">Tax Advisory</a></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Personal Tax (T1)</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Self-Employed</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Corporate Tax (T2)</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">GST / HST Returns</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Bookkeeping</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Tax Advisory</Link></li>
               </ul>
             </div>
 
@@ -1043,22 +1099,24 @@ export default function HomePage() {
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Business Services</h3>
               <ul className="space-y-2.5 text-sm text-white/65">
-                <li><a href="/#more-services" className="hover:text-white transition-colors">Corporation Incorporation</a></li>
-                <li><a href="/#more-services" className="hover:text-white transition-colors">Business Registration</a></li>
-                <li><a href="/#more-services" className="hover:text-white transition-colors">Payroll &amp; T4</a></li>
-                <li><a href="/#more-services" className="hover:text-white transition-colors">CRA Audit Support</a></li>
-                <li><a href="/#more-services" className="hover:text-white transition-colors">Rental Income (T776)</a></li>
-                <li><a href="/#more-services" className="hover:text-white transition-colors">Estate &amp; Trust (T3)</a></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Corporation Incorporation</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Business Registration</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Payroll &amp; T4</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">CRA Audit Support</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Rental Income (T776)</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Estate &amp; Trust (T3)</Link></li>
               </ul>
             </div>
 
-            {/* Portal */}
+            {/* Company */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Client Portal</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Company</h3>
               <ul className="space-y-2.5 text-sm text-white/65">
+                <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Our Services</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
                 <li><Link href="/login" className="hover:text-white transition-colors">Client Login</Link></li>
                 <li><Link href="/signup" className="hover:text-white transition-colors">Create Account</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
               </ul>
               <div className="mt-5 rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="text-xs text-white/50 leading-relaxed">

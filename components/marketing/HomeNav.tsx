@@ -36,8 +36,8 @@ export function HomeNav() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-white/70">
-            <a href="/#services" className="hover:text-white transition-colors py-1">Services</a>
-            <a href="/#why-us" className="hover:text-white transition-colors py-1">Why Us</a>
+            <Link href="/services" className="hover:text-white transition-colors py-1">Services</Link>
+            <Link href="/about" className="hover:text-white transition-colors py-1">About</Link>
             <a href="/#tax-tips" className="hover:text-white transition-colors py-1">Tax Tips</a>
             <Link href="/contact" className="hover:text-white transition-colors py-1">Contact</Link>
           </nav>
@@ -87,8 +87,8 @@ export function HomeNav() {
       >
         <div className="border-t border-white/10 bg-[#060e1f] px-4 py-3 space-y-0.5">
           {[
-            { href: "/#services", label: "Services", isAnchor: true },
-            { href: "/#why-us", label: "Why Us", isAnchor: true },
+            { href: "/services", label: "Services", isAnchor: false },
+            { href: "/about", label: "About", isAnchor: false },
             { href: "/#tax-tips", label: "Tax Tips", isAnchor: true },
             { href: "/contact", label: "Contact", isAnchor: false },
           ].map((item) =>

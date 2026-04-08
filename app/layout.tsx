@@ -77,6 +77,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "en-CA": SITE_URL,
+      "en": SITE_URL,
+    },
   },
   icons: {
     icon: [

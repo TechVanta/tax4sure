@@ -36,6 +36,60 @@ export const metadata: Metadata = {
   },
 };
 
+const contactJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact Tax4Sure",
+  description:
+    "Get a free consultation on Canadian tax filing, corporate tax, GST/HST, business registration, and more.",
+  url: "https://www.tax4sure.ca/contact",
+  mainEntity: {
+    "@type": "AccountingService",
+    "@id": "https://www.tax4sure.ca/#business",
+    name: "Tax4Sure",
+    email: "tax4sureca@gmail.com",
+    url: "https://www.tax4sure.ca",
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "tax4sureca@gmail.com",
+      contactType: "customer service",
+      areaServed: "CA",
+      availableLanguage: ["English", "French"],
+    },
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://www.tax4sure.ca",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Contact",
+      item: "https://www.tax4sure.ca/contact",
+    },
+  ],
+};
+
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
