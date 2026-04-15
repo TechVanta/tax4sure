@@ -304,21 +304,21 @@ const taxTips = [
 /* ── Testimonials ───────────────────────────────────────────────────────────── */
 const testimonials = [
   {
-    name: "Sarah M.",
+    name: "Jason Will",
     location: "Toronto, ON",
-    text: "Tax4Sure made filing my T1 incredibly easy. They found deductions I didn't even know existed and got me a much bigger refund than I expected. Highly recommend!",
+    text: "Very knowledgeable and professional tax accountant who not only fill taxes for you but explain you very patiently if you have any doubts. I would highly recommend Jigna for your tax filling!",
     rating: 5,
   },
   {
-    name: "Raj P.",
+    name: "Christmas Jewel",
     location: "Brampton, ON",
-    text: "As a self-employed consultant, taxes were always stressful. Tax4Sure handles everything — GST, T2125, quarterly remittances. I can focus on my business knowing taxes are covered.",
+    text: "Affordable and trustworthy tax services you can truly rely on—professional, transparent, and always looking out for your best interest.",
     rating: 5,
   },
   {
-    name: "Linda K.",
+    name: "Yash Thakkar",
     location: "Mississauga, ON",
-    text: "The secure portal is so convenient. I uploaded all my documents from my phone and everything was handled quickly. Professional, fast, and great value for the price.",
+    text: "I had very positive experience, Extremely professional and has great knowledge for the business and personal tax. I highly recommend the service to all.",
     rating: 5,
   },
 ];
